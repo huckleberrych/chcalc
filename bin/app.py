@@ -16,10 +16,7 @@ class Index(object):
         return render.hello_form()
         
     def POST(self):
-        form = web.input(save="")
-
-        #return render.test(test = savedecoder.fromAntiCheatFormat(form.save))
-
+        
         form = web.input(save="")
         optAncients, diff = main.theMonsterMath(form.save)
 
@@ -56,6 +53,4 @@ class Index(object):
                                 diff['Solomon'])
                                 
 if __name__ == "__main__":
-    #port = int(os.environ.get('PORT', 8080))
-    #app.run(host='0.0.0.0', port=port)
     app.run()

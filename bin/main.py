@@ -24,20 +24,20 @@ class Current(dict):
         self.curSolomon = curSolomon
 
     def getCurrentAncientLvls(self):
-        self.curArgaiv = float(self.input['ancients']['ancients']['28']['level'])
-        self.curAtman = float(self.input['ancients']['ancients']['13']['level'])
-        self.curBubos = float(self.input['ancients']['ancients']['18']['level'])
-        self.curChronos = float(self.input['ancients']['ancients']['17']['level'])
-        self.curDogcog = float(self.input['ancients']['ancients']['11']['level'])
-        self.curDora = float(self.input['ancients']['ancients']['14']['level'])
-        self.curFortuna = float(self.input['ancients']['ancients']['12']['level'])
-        self.curKuma = float(self.input['ancients']['ancients']['21']['level'])
-        self.curLibertas = float(self.input['ancients']['ancients']['4']['level'])
-        self.curMammon = float(self.input['ancients']['ancients']['8']['level'])
-        self.curMimzee = float(self.input['ancients']['ancients']['9']['level'])
-        self.curMorg = float(self.input['ancients']['ancients']['16']['level'])
-        self.curSiya = float(self.input['ancients']['ancients']['5']['level'])
-        self.curSolomon = float(self.input['ancients']['ancients']['3']['level'])
+        if self.input.get('ancients').get('ancients').get('28'): self.curArgaiv = float(self.input['ancients']['ancients']['28']['level'])
+        if self.input.get('ancients').get('ancients').get('13'): self.curAtman = float(self.input['ancients']['ancients']['13']['level'])
+        if self.input.get('ancients').get('ancients').get('18'): self.curBubos = float(self.input['ancients']['ancients']['18']['level'])
+        if self.input.get('ancients').get('ancients').get('17'): self.curChronos = float(self.input['ancients']['ancients']['17']['level'])
+        if self.input.get('ancients').get('ancients').get('11'): self.curDogcog = float(self.input['ancients']['ancients']['11']['level'])
+        if self.input.get('ancients').get('ancients').get('14'): self.curDora = float(self.input['ancients']['ancients']['14']['level'])
+        if self.input.get('ancients').get('ancients').get('12'): self.curFortuna = float(self.input['ancients']['ancients']['12']['level'])
+        if self.input.get('ancients').get('ancients').get('21'): self.curKuma = float(self.input['ancients']['ancients']['21']['level'])
+        if self.input.get('ancients').get('ancients').get('4'): self.curLibertas = float(self.input['ancients']['ancients']['4']['level'])
+        if self.input.get('ancients').get('ancients').get('8'): self.curMammon = float(self.input['ancients']['ancients']['8']['level'])
+        if self.input.get('ancients').get('ancients').get('9'): self.curMimzee = float(self.input['ancients']['ancients']['9']['level'])
+        if self.input.get('ancients').get('ancients').get('16'): self.curMorg = float(self.input['ancients']['ancients']['16']['level'])
+        if self.input.get('ancients').get('ancients').get('5'): self.curSiya = float(self.input['ancients']['ancients']['5']['level'])
+        if self.input.get('ancients').get('ancients').get('3'): self.curSolomon = float(self.input['ancients']['ancients']['3']['level'])
 
 class Optimal(dict):
     def __init__(self, current, siya, alpha, optArgaiv=0, optAtman=0,
@@ -126,20 +126,20 @@ def findOptSiya(curAncients, calcs):
 
 def getAncientLvlDifferences(curAncients, optAncients):
     diff = {}
-    diff['Argaiv'] = int(optAncients.optArgaiv - curAncients.curArgaiv)
-    diff['Atman'] = int(optAncients.optAtman - curAncients.curAtman)
-    diff['Bubos'] = int(optAncients.optBubos - curAncients.curBubos)
-    diff['Chronos'] = int(optAncients.optChronos - curAncients.curChronos)
-    diff['Dogcog'] = int(optAncients.optDogcog - curAncients.curDogcog)
-    diff['Dora'] = int(optAncients.optDora - curAncients.curDora)
-    diff['Fortuna'] = int(optAncients.optFortuna - curAncients.curFortuna)
-    diff['Kuma'] = int(optAncients.optKuma - curAncients.curKuma)
-    diff['Libertas'] = int(optAncients.optLibertas - curAncients.curLibertas)
-    diff['Mammon'] = int(optAncients.optMammon - curAncients.curMammon)
-    diff['Mimzee'] = int(optAncients.optMimzee - curAncients.curMimzee)
-    diff['Morg'] = int(optAncients.optMorg - curAncients.curMorg)
-    diff['Siya'] = int(optAncients.optSiya - curAncients.curSiya)
-    diff['Solomon'] = int(optAncients.optSolomon - curAncients.curSolomon)
+    diff['Argaiv'] = max(int(optAncients.optArgaiv - curAncients.curArgaiv), 0)
+    diff['Atman'] = max(int(optAncients.optAtman - curAncients.curAtman), 0)
+    diff['Bubos'] = max(int(optAncients.optBubos - curAncients.curBubos), 0)
+    diff['Chronos'] = max(int(optAncients.optChronos - curAncients.curChronos), 0)
+    diff['Dogcog'] = max(int(optAncients.optDogcog - curAncients.curDogcog), 0)
+    diff['Dora'] = max(int(optAncients.optDora - curAncients.curDora), 0)
+    diff['Fortuna'] = max(int(optAncients.optFortuna - curAncients.curFortuna), 0)
+    diff['Kuma'] = max(int(optAncients.optKuma - curAncients.curKuma), 0)
+    diff['Libertas'] = max(int(optAncients.optLibertas - curAncients.curLibertas), 0)
+    diff['Mammon'] = max(int(optAncients.optMammon - curAncients.curMammon), 0)
+    diff['Mimzee'] = max(int(optAncients.optMimzee - curAncients.curMimzee), 0)
+    diff['Morg'] = max(int(optAncients.optMorg - curAncients.curMorg), 0)
+    diff['Siya'] = max(int(optAncients.optSiya - curAncients.curSiya), 0)
+    diff['Solomon'] = max(int(optAncients.optSolomon - curAncients.curSolomon), 0)
     return diff
 
 def theMonsterMath(input):
