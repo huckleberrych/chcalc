@@ -16,12 +16,12 @@ class Index(object):
     def POST(self):
 
         form = web.input(save="")
-        optAncients, diff = main.theMonsterMath(form.save)
+        optAncients, diff, calcs = main.theMonsterMath(form.save)
         
         if optAncients == 'Invalid Save File':
             return render.fail()
         else:
-            return render.index(optAncients, diff)
+            return render.index(optAncients, diff, calcs)
 
 if __name__ == "__main__":
     app.run()
