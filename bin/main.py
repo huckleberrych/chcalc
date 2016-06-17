@@ -169,7 +169,7 @@ def getAncientLvlDifferences(curAncients, optAncients):
 def theMonsterMath(input):
     #results = []
     savedata = savedecoder.decryptSave(input)
-    if savedata == 'Invalid Save File':
+    if savedata in ('Invalid Save File', 'Invalid Save File - bad hash'):
         return (savedata, savedata, savedata)
     curAncients = Current(savedata)
     curAncients.getCurrentAncientLvls()

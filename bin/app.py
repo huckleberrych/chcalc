@@ -18,8 +18,8 @@ class Index(object):
         form = web.input(save="")
         optAncients, diff, calcs = main.theMonsterMath(form.save)
         
-        if optAncients == 'Invalid Save File':
-            return render.fail()
+        if optAncients in ('Invalid Save File', 'Invalid Save File - bad hash'):
+            return render.fail(failmsg = optAncients)
         else:
             return render.index(optAncients, diff, calcs)
 
