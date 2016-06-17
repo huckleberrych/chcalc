@@ -1,7 +1,5 @@
 import web
 import main
-import savedecoder
-import os
 
 urls = (
   '/', 'Index'
@@ -16,41 +14,14 @@ class Index(object):
         return render.hello_form()
         
     def POST(self):
-        
+
         form = web.input(save="")
         optAncients, diff = main.theMonsterMath(form.save)
-
+        
         if optAncients == 'Invalid Save File':
             return render.fail()
         else:
-            return render.index(optAncients.optArgaiv,
-                                optAncients.optAtman,
-                                optAncients.optBubos,
-                                optAncients.optChronos,
-                                optAncients.optDogcog,
-                                optAncients.optDora,
-                                optAncients.optFortuna,
-                                optAncients.optKuma,
-                                optAncients.optLibertas,
-                                optAncients.optMammon,
-                                optAncients.optMimzee,
-                                optAncients.optMorg,
-                                optAncients.optSiya,
-                                optAncients.optSolomon,
-                                diff['Argaiv'],
-                                diff['Atman'],
-                                diff['Bubos'],
-                                diff['Chronos'],
-                                diff['Dogcog'],
-                                diff['Dora'],
-                                diff['Fortuna'],
-                                diff['Kuma'],
-                                diff['Libertas'],
-                                diff['Mammon'],
-                                diff['Mimzee'],
-                                diff['Morg'],
-                                diff['Siya'],
-                                diff['Solomon'])
-                                
+            return render.index(optAncients, diff)
+
 if __name__ == "__main__":
     app.run()
