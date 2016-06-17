@@ -128,7 +128,7 @@ def findOptSiya(curAncients, calcs):
         optAncients = Optimal(curAncients, newsiya, calcs.alpha)
         optAncients.calcOptimalAncientLvls()
         optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
-    return (newsiya - 1)
+    return min((newsiya - 1), 0)
 
 def getAncientLvlDifferences(curAncients, optAncients):
     diff = {}
