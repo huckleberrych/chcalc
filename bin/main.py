@@ -170,7 +170,7 @@ def theMonsterMath(input):
     #results = []
     savedata = savedecoder.decryptSave(input)
     if savedata == 'Invalid Save File':
-        return (savedata, savedata)
+        return (savedata, savedata, savedata)
     curAncients = Current(savedata)
     curAncients.getCurrentAncientLvls()
     calcs = Calculations(savedata)
