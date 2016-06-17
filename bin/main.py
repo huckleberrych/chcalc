@@ -70,7 +70,10 @@ class Optimal(dict):
         self.optDogcog = int(floor(2.844*log(self.siya) - 1.422*log(1.0/99 + exp((-0.01)*int(self.current.curDogcog))) - 7.232))
         self.optDora = int(floor(2.877*log(self.siya) - 1.4365*log(100.0/99-exp(-0.002*int(self.current.curDora))) - 9.63))
         self.optFortuna = int(floor(2.875*log(self.siya) - 1.4375*log(10.0/9-exp(-0.0025*int(self.current.curFortuna))) - 9.3))
-        self.optKuma = int(floor(2.88*log(self.siya) - 1.44*log(self.alpha) - 1.44*log(0.25+exp(-0.001*int(self.current.curKuma))) - 10.42))
+        
+        self.optKuma = int(floor(2.844*log(self.siya) - 1.422*log(self.alpha) - 1.422*log(0.25 + exp(-0.01*int(self.current.curKuma))) - 7.014))   #new
+        #self.optKuma = int(floor(2.88*log(self.siya) - 1.44*log(self.alpha) - 1.44*log(0.25+exp(-0.001*int(self.current.curKuma))) - 10.42))        #original
+        
         self.optLibertas = int(floor(0.926*self.siya))
         self.optMammon = int(floor(0.926*self.siya))
         self.optMimzee = int(floor(0.926*self.siya))
