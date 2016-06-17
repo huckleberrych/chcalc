@@ -89,12 +89,15 @@ class Calculations(dict):
         self.chorDiscount = chorDiscount
         
     def doTheMath(self):
-        self.AS = floor(5 * log10(float(self.savedata["heroSoulsSacrificed"])))  #or self.AS = self.savedata["ancientSoulsTotal"]
+        #if self.savedata.get('transcendent') in (True, 'true'):
+        self.AS = self.savedata["ancientSoulsTotal"]
+        #self.AS = floor(5 * log10(float(self.savedata["heroSoulsSacrificed"])))  #or self.AS = self.savedata["ancientSoulsTotal"]
         self.tp = (50-49*(exp(-self.AS/10000.0))) * (1 + .05*int(self.savedata['outsiders']['outsiders']['4']['level']))/100
         self.ascendZone = self.savedata["highestFinishedZonePersist"]
         self.alpha = 1.4067*log(1+self.tp*1)/log(ceil(self.ascendZone/500.0)*0.005+1.14)
         self.totalSoulsAvail = float(self.savedata["heroSouls"]) + float(self.savedata["primalSouls"])
         self.chorDiscount = 1-0.95**int(self.savedata['outsiders']['outsiders']['2']['level'])
+
 
 def calcOptCost(curAncients, optAncients, chorDiscount):
     optCost = 0
