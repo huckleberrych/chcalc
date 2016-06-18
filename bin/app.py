@@ -2,12 +2,17 @@ import web
 import main
 
 urls = (
-  '/', 'Index'
+  '/', 'Index',
+  '/changelog', 'Changelog'
 )
 
 app = web.application(urls, globals())
 
-render = web.template.render('templates/')
+render = web.template.render('templates/', base="layout")
+
+class Changelog(object):
+    def GET(self):
+        return render.changelog()
 
 class Index(object):
     def GET(self):

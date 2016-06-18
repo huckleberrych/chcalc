@@ -136,11 +136,28 @@ class Optimal(dict):
             self.optMorg = int(float(self.siya ** 2))
             self.optSolomon = int(floor(self.siya**(0.8)/self.alpha**0.4))
 
+    def addCommas(self):
+        self.optArgaiv = "{:,}".format(self.optArgaiv)
+        self.optAtman = "{:,}".format(self.optAtman)
+        self.optBubos = "{:,}".format(self.optBubos)
+        self.optChronos = "{:,}".format(self.optChronos)
+        self.optDogcog = "{:,}".format(self.optDogcog)
+        self.optDora = "{:,}".format(self.optDora)
+        self.optFortuna = "{:,}".format(self.optFortuna)
+        self.optKuma = "{:,}".format(self.optKuma)
+        self.optLibertas = "{:,}".format(self.optLibertas)
+        self.optMammon = "{:,}".format(self.optMammon)
+        self.optMimzee = "{:,}".format(self.optMimzee)
+        self.optMorg = "{:,}".format(self.optMorg)
+        self.optSiya = "{:,}".format(self.optSiya)
+        self.optSolomon = "{:,}".format(self.optSolomon)
+
 class Calculations(dict):
     
     def __init__(self, savedata, AS=0, tp=0, ascendZone=0, alpha=0,
                  totalSoulsAvail=0, chorDiscount=0, maxTPreward=0,
-                 soloMultiplier=1, maxTPzone=0):
+                 soloMultiplier=1, maxTPzone=0, newTPzone=0,
+                 newSoloMultiplier=1):
         self.savedata = savedata
         self.AS = AS
         self.tp = tp
@@ -151,6 +168,8 @@ class Calculations(dict):
         self.maxTPreward = maxTPreward
         self.soloMultiplier = soloMultiplier
         self.maxTPzone = maxTPzone
+        self.newTPzone = newTPzone
+        self.newSoloMultiplier = newSoloMultiplier
         
     def doTheMath(self, curSolomon, useAscendSouls):
         if self.savedata.get("ancientSoulsTotal"):
@@ -170,6 +189,12 @@ class Calculations(dict):
             self.soloMultiplier = calcSoloMultiplier(curSolomon, self.savedata['outsiders']['outsiders']['5']['level'])
         if self.maxTPreward != 0:
             self.maxTPzone = int((ceil((log(self.maxTPreward / (20 * self.soloMultiplier))) / (log(1 + self.tp))) * 5) + 100)
+            
+    def findNewTPzone(self, optSolomon):
+        if self.savedata.get('outsiders'):
+            self.newSoloMultiplier = calcSoloMultiplier(optSolomon, self.savedata['outsiders']['outsiders']['5']['level'])
+        if self.maxTPreward != 0:
+            self.newTPzone = int((ceil((log(self.maxTPreward / (20 * self.newSoloMultiplier))) / (log(1 + self.tp))) * 5) + 100)
 
 def calcOptCost(curAncients, optAncients, chorDiscount):
     optCost = 0
@@ -243,20 +268,20 @@ def calcSoloMultiplier(curSolomon, ponyboy):                                    
 
 def getAncientLvlDifferences(curAncients, optAncients):
     diff = {}
-    diff['Argaiv'] = max(int(optAncients.optArgaiv - curAncients.curArgaiv), 0)
-    diff['Atman'] = max(int(optAncients.optAtman - curAncients.curAtman), 0)
-    diff['Bubos'] = max(int(optAncients.optBubos - curAncients.curBubos), 0)
-    diff['Chronos'] = max(int(optAncients.optChronos - curAncients.curChronos), 0)
-    diff['Dogcog'] = max(int(optAncients.optDogcog - curAncients.curDogcog), 0)
-    diff['Dora'] = max(int(optAncients.optDora - curAncients.curDora), 0)
-    diff['Fortuna'] = max(int(optAncients.optFortuna - curAncients.curFortuna), 0)
-    diff['Kuma'] = max(int(optAncients.optKuma - curAncients.curKuma), 0)
-    diff['Libertas'] = max(int(optAncients.optLibertas - curAncients.curLibertas), 0)
-    diff['Mammon'] = max(int(optAncients.optMammon - curAncients.curMammon), 0)
-    diff['Mimzee'] = max(int(optAncients.optMimzee - curAncients.curMimzee), 0)
-    diff['Morg'] = max(int(optAncients.optMorg - curAncients.curMorg), 0)
-    diff['Siya'] = max(int(optAncients.optSiya - curAncients.curSiya), 0)
-    diff['Solomon'] = max(int(optAncients.optSolomon - curAncients.curSolomon), 0)
+    diff['Argaiv'] = "{:,}".format(max(int(optAncients.optArgaiv - curAncients.curArgaiv), 0))
+    diff['Atman'] = "{:,}".format(max(int(optAncients.optAtman - curAncients.curAtman), 0))
+    diff['Bubos'] = "{:,}".format(max(int(optAncients.optBubos - curAncients.curBubos), 0))
+    diff['Chronos'] = "{:,}".format(max(int(optAncients.optChronos - curAncients.curChronos), 0))
+    diff['Dogcog'] = "{:,}".format(max(int(optAncients.optDogcog - curAncients.curDogcog), 0))
+    diff['Dora'] = "{:,}".format(max(int(optAncients.optDora - curAncients.curDora), 0))
+    diff['Fortuna'] = "{:,}".format(max(int(optAncients.optFortuna - curAncients.curFortuna), 0))
+    diff['Kuma'] = "{:,}".format(max(int(optAncients.optKuma - curAncients.curKuma), 0))
+    diff['Libertas'] = "{:,}".format(max(int(optAncients.optLibertas - curAncients.curLibertas), 0))
+    diff['Mammon'] = "{:,}".format(max(int(optAncients.optMammon - curAncients.curMammon), 0))
+    diff['Mimzee'] = "{:,}".format(max(int(optAncients.optMimzee - curAncients.curMimzee), 0))
+    diff['Morg'] = "{:,}".format(max(int(optAncients.optMorg - curAncients.curMorg), 0))
+    diff['Siya'] = "{:,}".format(max(int(optAncients.optSiya - curAncients.curSiya), 0))
+    diff['Solomon'] = "{:,}".format(max(int(optAncients.optSolomon - curAncients.curSolomon), 0))
     return diff
 
 def theMonsterMath(input, useAscendSouls):
@@ -282,4 +307,6 @@ def theMonsterMath(input, useAscendSouls):
     optAncients.calcOptimalAncientLvls()
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
     diff = getAncientLvlDifferences(curAncients, optAncients)
+    calcs.findNewTPzone(optAncients.optSolomon)
+    optAncients.addCommas()
     return (optAncients, diff, calcs)
