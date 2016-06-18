@@ -15,8 +15,9 @@ class Index(object):
         
     def POST(self):
 
-        form = web.input(save="")
-        optAncients, diff, calcs = main.theMonsterMath(form.save)
+        form = web.input(save="", useAscendSouls='off')
+
+        optAncients, diff, calcs = main.theMonsterMath(form.save, form.useAscendSouls)
         
         if optAncients in ('Invalid Save File', 'Invalid Save File - bad hash'):
             return render.fail(failmsg = optAncients)

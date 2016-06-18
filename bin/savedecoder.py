@@ -4,7 +4,7 @@ from JavaScript to Python.  All credit for the function of the
 code itself goes to Alex B. https://github.com/alexbonjour
 """
 
-from base64 import b64decode, b64encode
+from base64 import b64decode
 from hashlib import md5
 import json
 
