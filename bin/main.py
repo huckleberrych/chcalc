@@ -92,54 +92,55 @@ class Optimal(dict):
 
     def calcOptimalAncientLvls(self):
         self.optArgaiv = int(self.siya)
-        self.optAtman = int(
-            floor(2.832*log(self.siya)
-            - 1.416*log(self.alpha)
-            - 1.416*log(4.0/3-exp(-0.013*int(self.current.curAtman)))
-            -6.613)
-            )
-        self.optBubos = int(
-            floor(2.8*log(self.siya)
-            - 1.4*log(1+exp(-0.02*int(self.current.curBubos)))
-            - 5.94)
-            )
-        self.optChronos = int(
-            floor(2.75*log(self.siya)
-            - 1.375*log(2-exp(-0.034*int(self.current.curChronos)))
-            - 5.1)
-            )
-        self.optDogcog = int(
-            floor(2.844*log(self.siya)
-            - 1.422*log(1.0/99 + exp((-0.01)*int(self.current.curDogcog)))
-            - 7.232)
-            )
-        self.optDora = int(
-            floor(2.877*log(self.siya)
-            - 1.4365*log(100.0/99-exp(-0.002*int(self.current.curDora)))
-            - 9.63)
-            )
-        self.optFortuna = int(
-            floor(2.875*log(self.siya)
-            - 1.4375*log(10.0/9-exp(-0.0025*int(self.current.curFortuna)))
-            - 9.3)
-            )
-        self.optKuma = int(
-            floor(2.844*log(self.siya)
-            - 1.422*log(self.alpha)
-            - 1.422*log(0.25 + exp(-0.01*int(self.current.curKuma)))
-            - 7.014)
-            )
-        self.optLibertas = int(floor(0.926*self.siya))
-        self.optMammon = int(floor(0.926*self.siya))
-        self.optMimzee = int(floor(0.926*self.siya))
-        self.optMorg = int(float(self.siya ** 2))
-        self.optSolomon = int(floor(self.siya**(0.8)/self.alpha**0.4))
+        if self.alpha != 0:
+            self.optAtman = int(
+                floor(2.832*log(self.siya)
+                - 1.416*log(self.alpha)
+                - 1.416*log(4.0/3-exp(-0.013*int(self.current.curAtman)))
+                -6.613)
+                )
+            self.optBubos = int(
+                floor(2.8*log(self.siya)
+                - 1.4*log(1+exp(-0.02*int(self.current.curBubos)))
+                - 5.94)
+                )
+            self.optChronos = int(
+                floor(2.75*log(self.siya)
+                - 1.375*log(2-exp(-0.034*int(self.current.curChronos)))
+                - 5.1)
+                )
+            self.optDogcog = int(
+                floor(2.844*log(self.siya)
+                - 1.422*log(1.0/99 + exp((-0.01)*int(self.current.curDogcog)))
+                - 7.232)
+                )
+            self.optDora = int(
+                floor(2.877*log(self.siya)
+                - 1.4365*log(100.0/99-exp(-0.002*int(self.current.curDora)))
+                - 9.63)
+                )
+            self.optFortuna = int(
+                floor(2.875*log(self.siya)
+                - 1.4375*log(10.0/9-exp(-0.0025*int(self.current.curFortuna)))
+                - 9.3)
+                )
+            self.optKuma = int(
+                floor(2.844*log(self.siya)
+                - 1.422*log(self.alpha)
+                - 1.422*log(0.25 + exp(-0.01*int(self.current.curKuma)))
+                - 7.014)
+                )
+            self.optLibertas = int(floor(0.926*self.siya))
+            self.optMammon = int(floor(0.926*self.siya))
+            self.optMimzee = int(floor(0.926*self.siya))
+            self.optMorg = int(float(self.siya ** 2))
+            self.optSolomon = int(floor(self.siya**(0.8)/self.alpha**0.4))
 
 class Calculations(dict):
     
     def __init__(self, savedata, AS=0, tp=0, ascendZone=0, alpha=0,
                  totalSoulsAvail=0, chorDiscount=0, maxTPreward=0,
-                 soloMultiplier=0, maxTPzone=0):
+                 soloMultiplier=1, maxTPzone=0):
         self.savedata = savedata
         self.AS = AS
         self.tp = tp
@@ -152,17 +153,23 @@ class Calculations(dict):
         self.maxTPzone = maxTPzone
         
     def doTheMath(self, curSolomon, useAscendSouls):
-        self.AS = self.savedata["ancientSoulsTotal"]
-        self.tp = (50 - 49 * (exp(-self.AS / 10000.0))) * (1 + .05 * int(self.savedata['outsiders']['outsiders']['4']['level'])) / 100
+        if self.savedata.get("ancientSoulsTotal"):
+            self.AS = self.savedata["ancientSoulsTotal"]
+        if self.savedata.get('outsiders'):
+            self.tp = (50 - 49 * (exp(-self.AS / 10000.0))) * (1 + .05 * int(self.savedata['outsiders']['outsiders']['4']['level'])) / 100
         self.ascendZone = self.savedata["highestFinishedZonePersist"]
         self.alpha = 1.4067 * log(1 + self.tp * 1) / log(ceil(self.ascendZone / 500.0) * 0.005 + 1.14)
         self.totalSoulsAvail = float(self.savedata["heroSouls"])
         if useAscendSouls == 'on':
             self.totalSoulsAvail += float(self.savedata["primalSouls"])
-        self.chorDiscount = 1 - 0.95 ** int(self.savedata['outsiders']['outsiders']['2']['level'])
-        self.maxTPreward = float(self.savedata["heroSoulsSacrificed"]) * (0.05 + (int(self.savedata['outsiders']['outsiders']['4']['level']) * 0.005))
-        self.soloMultiplier = calcSoloMultiplier(curSolomon, self.savedata['outsiders']['outsiders']['5']['level'])
-        self.maxTPzone = int((ceil((log(self.maxTPreward / (20 * self.soloMultiplier))) / (log(1 + self.tp))) * 5) + 100)
+        if self.savedata.get('outsiders'):
+            self.chorDiscount = 1 - 0.95 ** int(self.savedata['outsiders']['outsiders']['2']['level'])
+        if self.savedata.get("heroSoulsSacrificed"):
+            self.maxTPreward = float(self.savedata["heroSoulsSacrificed"]) * (0.05 + (int(self.savedata['outsiders']['outsiders']['4']['level']) * 0.005))
+        if self.savedata.get('outsiders'):
+            self.soloMultiplier = calcSoloMultiplier(curSolomon, self.savedata['outsiders']['outsiders']['5']['level'])
+        if self.maxTPreward != 0:
+            self.maxTPzone = int((ceil((log(self.maxTPreward / (20 * self.soloMultiplier))) / (log(1 + self.tp))) * 5) + 100)
 
 def calcOptCost(curAncients, optAncients, chorDiscount):
     optCost = 0
@@ -197,7 +204,22 @@ def calcOptCost(curAncients, optAncients, chorDiscount):
     return optCost
 
 def findOptSiya(curAncients, calcs):
-    optcost = 0
+    
+    ##check if they can afford to optimize
+    optAncients = Optimal(curAncients, curAncients.curSiya, calcs.alpha)
+    optAncients.calcOptimalAncientLvls()
+    optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
+    if optcost > calcs.totalSoulsAvail:
+        return 'broke'  ###can't afford to optimize
+    
+    ##check if they can afford +1 siya
+    optAncients = Optimal(curAncients, curAncients.curSiya + 1, calcs.alpha)
+    optAncients.calcOptimalAncientLvls()
+    optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
+    if optcost > calcs.totalSoulsAvail:
+        return 'optimize'  ###can't afford +1 but can afford optimize
+    
+    ##
     newsiya = curAncients.curSiya
     while optcost <= calcs.totalSoulsAvail:
         newsiya += 1
@@ -240,12 +262,22 @@ def getAncientLvlDifferences(curAncients, optAncients):
 def theMonsterMath(input, useAscendSouls):
     savedata = savedecoder.decryptSave(input)
     if savedata in ('Invalid Save File', 'Invalid Save File - bad hash'):
-        return (savedata, savedata, savedata)
+        return (savedata, 0, 0)
     curAncients = Current(savedata)
     curAncients.getCurrentAncientLvls()
+    
+    if curAncients.curSiya == 0:
+        return ('You need to buy Siyalatas!', 0, 0)
+    
     calcs = Calculations(savedata)
     calcs.doTheMath(curAncients.curSolomon, useAscendSouls)
+    
     optsiya = findOptSiya(curAncients, calcs)
+    if optsiya == 'broke':
+        return ("You can't afford to optimize your ancients right now", 0, 0)
+    if optsiya == 'optimize':
+        optsiya = curAncients.curSiya
+    
     optAncients = Optimal(curAncients, optsiya, calcs.alpha)
     optAncients.calcOptimalAncientLvls()
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)

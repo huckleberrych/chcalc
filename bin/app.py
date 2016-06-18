@@ -19,7 +19,7 @@ class Index(object):
 
         optAncients, diff, calcs = main.theMonsterMath(form.save, form.useAscendSouls)
         
-        if optAncients in ('Invalid Save File', 'Invalid Save File - bad hash'):
+        if isinstance(optAncients, str):
             return render.fail(failmsg = optAncients)
         else:
             return render.index(optAncients, diff, calcs)

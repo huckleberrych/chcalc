@@ -1,7 +1,18 @@
-testdict = {'outsiders':{'outsiders':{'4':{'level':5}}}}
+from math import exp, log, ceil, floor
 
-test1 = testdict['outsiders']['outsiders']['4']['level']
-test2 = testdict['outsiders']*2['4']['level']
+siya = 1
+curAtman = '0'
+tp = 0
+ascendZone = 147
 
-print test1
-print test2
+"""
+test = int(floor(2.832*log(siya) - 1.416*log(alpha) - 1.416*log(4.0/3-exp(-0.013*max(int(curAtman), 1)))-6.613))
+"""
+
+#optAtman = int(floor(       2.832*log(siya)   -   1.416*log(alpha)  -     1.416*log(4.0/3-exp(-0.013*int(curAtman)))     -6.613)   )
+
+#alpha = 1.4067 * log(1 + tp * 1) / log(ceil(ascendZone / 500.0) * 0.005 + 1.14)
+alpha = log(1+tp)
+
+
+print alpha
