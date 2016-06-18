@@ -190,11 +190,15 @@ class Calculations(dict):
         if self.maxTPreward != 0:
             self.maxTPzone = int((ceil((log(self.maxTPreward / (20 * self.soloMultiplier))) / (log(1 + self.tp))) * 5) + 100)
             
-    def findNewTPzone(self, optSolomon):
-        if self.savedata.get('outsiders'):
-            self.newSoloMultiplier = calcSoloMultiplier(optSolomon, self.savedata['outsiders']['outsiders']['5']['level'])
-        if self.maxTPreward != 0:
-            self.newTPzone = int((ceil((log(self.maxTPreward / (20 * self.newSoloMultiplier))) / (log(1 + self.tp))) * 5) + 100)
+    def findNewTPzone(self, optSolomon, curSolomon):
+        #ancient levels have decimals, must check vs our opt (always x.0) so if opt = +0 then maxTPzone = newTPzone
+        if floor(optSolomon) != floor(curSolomon) and ceil(optSolomon) != ceil(optSolomon):
+            if self.savedata.get('outsiders'):
+                self.newSoloMultiplier = calcSoloMultiplier(optSolomon, self.savedata['outsiders']['outsiders']['5']['level'])
+            if self.maxTPreward != 0:
+                self.newTPzone = int((ceil((log(self.maxTPreward / (20 * self.newSoloMultiplier))) / (log(1 + self.tp))) * 5) + 100)
+        else:
+            self.newTPzone = self.maxTPzone
 
 def calcOptCost(curAncients, optAncients, chorDiscount):
     optCost = 0
@@ -307,6 +311,6 @@ def theMonsterMath(input, useAscendSouls):
     optAncients.calcOptimalAncientLvls()
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
     diff = getAncientLvlDifferences(curAncients, optAncients)
-    calcs.findNewTPzone(optAncients.optSolomon)
+    calcs.findNewTPzone(optAncients.optSolomon, curAncients.curSolomon)
     optAncients.addCommas()
     return (optAncients, diff, calcs)
