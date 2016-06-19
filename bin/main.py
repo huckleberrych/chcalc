@@ -175,7 +175,7 @@ class Calculations(dict):
         if self.savedata.get("ancientSoulsTotal"):
             self.AS = self.savedata["ancientSoulsTotal"]
         if self.savedata.get('outsiders'):
-            self.tp = ((50 - 49 * (exp(-self.AS/10000.0))) + .05 * int(self.savedata['outsiders']['outsiders']['4']['level']))/100
+            self.tp = (50 - 49 * (exp(-self.AS/10000.0))) / 100 + .0005 * int(self.savedata['outsiders']['outsiders']['4']['level'])
         self.ascendZone = self.savedata["highestFinishedZonePersist"]
         self.alpha = 1.4067 * log(1 + self.tp * 1) / log(ceil(self.ascendZone / 500.0) * 0.005 + 1.14)
         self.totalSoulsAvail = float(self.savedata["heroSouls"])

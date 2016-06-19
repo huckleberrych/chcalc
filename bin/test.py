@@ -4,7 +4,9 @@ maxTPreward = 41900000000000000
 AS = 87 #
 phan = 7 #
 #tp = .0177
-tp = ((50 - 49 * (exp(-AS/10000.0))) + .05 * int(phan))/100
+
+tp = (50 - 49 * (exp(-AS/10000.0))) / 100 + .0005 * int(phan)
+
 curSolomon = 195232
 ponyboy = 19
 soloMultiplier = 1+(2.8+((curSolomon-80)*0.01))*(ponyboy+1)
