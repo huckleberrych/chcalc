@@ -192,7 +192,7 @@ class Calculations(dict):
             
     def findNewTPzone(self, optSolomon, curSolomon):
         #ancient levels have decimals, must check vs our opt (always x.0) so if opt = +0 then maxTPzone = newTPzone
-        if floor(optSolomon) != floor(curSolomon) and ceil(optSolomon) != ceil(optSolomon):
+        if floor(optSolomon) != floor(curSolomon) and ceil(optSolomon) != ceil(curSolomon):
             if self.savedata.get('outsiders'):
                 self.newSoloMultiplier = calcSoloMultiplier(optSolomon, self.savedata['outsiders']['outsiders']['5']['level'])
             if self.maxTPreward != 0:
