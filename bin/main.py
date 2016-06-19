@@ -291,19 +291,25 @@ def getAncientLvlDifferences(curAncients, optAncients):
 def theMonsterMath(input, useAscendSouls):
     savedata = savedecoder.decryptSave(input)
     if savedata in ('Invalid Save File', 'Invalid Save File - bad hash'):
-        return (savedata, 0, 0)
+        return (0, 0, 0, savedata)
     curAncients = Current(savedata)
     curAncients.getCurrentAncientLvls()
     
     if curAncients.curSiya == 0:
-        return ('You need to buy Siyalatas!', 0, 0)
+        return (0, 0, 0, 'You need to buy Siyalatas!')
     
     calcs = Calculations(savedata)
     calcs.doTheMath(curAncients.curSolomon, useAscendSouls)
     
     optsiya = findOptSiya(curAncients, calcs)
     if optsiya == 'broke':
-        return ("You can't afford to optimize your ancients right now", 0, 0)
+        optAncients = Optimal(curAncients, int(curAncients.curSiya), calcs.alpha)
+        optAncients.calcOptimalAncientLvls()
+        optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
+        diff = getAncientLvlDifferences(curAncients, optAncients)
+        calcs.findNewTPzone(optAncients.optSolomon, curAncients.curSolomon)
+        optAncients.addCommas()
+        return (optAncients, diff, calcs, "<h2>You can't afford to optimize your ancients right now<br>but here are the optimal levels:</h2>")
     if optsiya == 'optimize':
         optsiya = curAncients.curSiya
     
@@ -313,4 +319,4 @@ def theMonsterMath(input, useAscendSouls):
     diff = getAncientLvlDifferences(curAncients, optAncients)
     calcs.findNewTPzone(optAncients.optSolomon, curAncients.curSolomon)
     optAncients.addCommas()
-    return (optAncients, diff, calcs)
+    return (optAncients, diff, calcs, '<h2>These are the highest optimal ancient levels you can afford:</h2>')

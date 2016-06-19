@@ -22,12 +22,14 @@ class Index(object):
 
         form = web.input(save="", useAscendSouls='off')
 
-        optAncients, diff, calcs = main.theMonsterMath(form.save, form.useAscendSouls)
+        optAncients, diff, calcs, msg = main.theMonsterMath(form.save, form.useAscendSouls)
         
-        if isinstance(optAncients, str):
-            return render.fail(failmsg = optAncients)
+        if msg in ('You need to buy Siyalatas!',
+                       'Invalid Save File',
+                       'Invalid Save File - bad hash'):
+            return render.fail(msg = msg)
         else:
-            return render.index(optAncients, diff, calcs)
+            return render.index(optAncients, diff, calcs, msg)
 
 if __name__ == "__main__":
     app.run()
