@@ -87,7 +87,7 @@ class Optimal(dict):
         self.optMammon = optMammon
         self.optMimzee = optMimzee
         self.optMorg = optMorg
-        self.optSiya = siya
+        self.optSiya = int(siya)
         self.optSolomon = optSolomon
 
     def calcOptimalAncientLvls(self):
@@ -151,6 +151,21 @@ class Optimal(dict):
         self.optMorg = "{:,}".format(self.optMorg)
         self.optSiya = "{:,}".format(self.optSiya)
         self.optSolomon = "{:,}".format(self.optSolomon)
+        self.current.curArgaiv = "{:,}".format(int(self.current.curArgaiv))
+        self.current.curAtman = "{:,}".format(int(self.current.curAtman))
+        self.current.curBubos = "{:,}".format(int(self.current.curBubos))
+        self.current.curChronos = "{:,}".format(int(self.current.curChronos))
+        self.current.curDogcog = "{:,}".format(int(self.current.curDogcog))
+        self.current.curDora = "{:,}".format(int(self.current.curDora))
+        self.current.curFortuna = "{:,}".format(int(self.current.curFortuna))
+        self.current.curKuma = "{:,}".format(int(self.current.curKuma))
+        self.current.curLibertas = "{:,}".format(int(self.current.curLibertas))
+        self.current.curMammon = "{:,}".format(int(self.current.curMammon))
+        self.current.curMimzee = "{:,}".format(int(self.current.curMimzee))
+        self.current.curMorg = "{:,}".format(int(self.current.curMorg))
+        self.current.curSiya = "{:,}".format(int(self.current.curSiya))
+        self.current.curSolomon = "{:,}".format(int(self.current.curSolomon))
+        
 
 class Calculations(dict):
     
@@ -201,35 +216,54 @@ class Calculations(dict):
             self.newTPzone = self.maxTPzone
 
 def calcOptCost(curAncients, optAncients, chorDiscount):
-    optCost = 0
+    #optCost = 0
+    optCost = {'Argaiv':0, 'Atman':0, 'Bubos':0, 'Chronos':0,
+               'Dogcog':0, 'Dora':0, 'Fortuna':0, 'Kuma':0,
+               'Libertas':0, 'Mammon':0, 'Mimzee':0, 'Morg':0,
+               'Siya':0, 'Solomon':0}
     if optAncients.optArgaiv > curAncients.curArgaiv:
-        optCost += ceil((1 - chorDiscount)*(0.5*(optAncients.optArgaiv)*(optAncients.optArgaiv+2)-0.5*curAncients.curArgaiv*(curAncients.curArgaiv+2)))
+        optCost['Argaiv'] = int(ceil((1 - chorDiscount)*(0.5*(optAncients.optArgaiv)*(optAncients.optArgaiv+2)-0.5*curAncients.curArgaiv*(curAncients.curArgaiv+2))))
     if optAncients.optAtman > curAncients.curAtman:
-        optCost += ceil(((1-chorDiscount)*((2**(optAncients.optAtman+1)-1)-(2**(curAncients.curAtman+1)-1))))
+        optCost['Atman'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optAtman+1)-1)-(2**(curAncients.curAtman+1)-1)))))
     if optAncients.optBubos > curAncients.curBubos:
-        optCost += ceil(((1-chorDiscount)*((2**(optAncients.optBubos+1)-1)-(2**(curAncients.curBubos+1)-1))))
+        optCost['Bubos'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optBubos+1)-1)-(2**(curAncients.curBubos+1)-1)))))
     if optAncients.optChronos > curAncients.curChronos:
-        optCost += ceil(((1-chorDiscount)*((2**(optAncients.optChronos+1)-1)-(2**(curAncients.curChronos+1)-1))))
+        optCost['Chronos'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optChronos+1)-1)-(2**(curAncients.curChronos+1)-1)))))
     if optAncients.optDogcog > curAncients.curDogcog:
-        optCost += ceil(((1-chorDiscount)*((2**(optAncients.optDogcog+1)-1)-(2**(curAncients.curDogcog+1)-1))))
+        optCost['Dogcog'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optDogcog+1)-1)-(2**(curAncients.curDogcog+1)-1)))))
     if optAncients.optDora > curAncients.curDora:
-        optCost += ceil(((1-chorDiscount)*((2**(optAncients.optDora+1)-1)-(2**(curAncients.curDora+1)-1))))
+        optCost['Dora'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optDora+1)-1)-(2**(curAncients.curDora+1)-1)))))
     if optAncients.optFortuna > curAncients.curFortuna:
-        optCost += ceil(((1-chorDiscount)*((2**(optAncients.optFortuna+1)-1)-(2**(curAncients.curFortuna+1)-1))))
+        optCost['Fortuna'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optFortuna+1)-1)-(2**(curAncients.curFortuna+1)-1)))))
     if optAncients.optKuma > curAncients.curKuma:
-        optCost += ceil(((1-chorDiscount)*((2**(optAncients.optKuma+1)-1)-(2**(curAncients.curKuma+1)-1))))
+        optCost['Kuma'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optKuma+1)-1)-(2**(curAncients.curKuma+1)-1)))))
     if optAncients.optLibertas > curAncients.curLibertas:
-        optCost += ceil((1-chorDiscount)*(0.5*(optAncients.optLibertas)*(optAncients.optLibertas+2)-0.5*curAncients.curLibertas*(curAncients.curLibertas+2)))
+        optCost['Libertas'] = int(ceil((1-chorDiscount)*(0.5*(optAncients.optLibertas)*(optAncients.optLibertas+2)-0.5*curAncients.curLibertas*(curAncients.curLibertas+2))))
     if optAncients.optMammon > curAncients.curMammon:
-        optCost += ceil((1-chorDiscount)*(0.5*(optAncients.optMammon)*(optAncients.optMammon+2)-0.5*curAncients.curMammon*(curAncients.curMammon+2)))
+        optCost['Mammon'] = int(ceil((1-chorDiscount)*(0.5*(optAncients.optMammon)*(optAncients.optMammon+2)-0.5*curAncients.curMammon*(curAncients.curMammon+2))))
     if optAncients.optMimzee > curAncients.curMimzee:
-        optCost += ceil((1-chorDiscount)*(0.5*(optAncients.optMimzee)*(optAncients.optMimzee+2)-0.5*curAncients.curMimzee*(curAncients.curMimzee+2)))
+        optCost['Mimzee'] = int(ceil((1-chorDiscount)*(0.5*(optAncients.optMimzee)*(optAncients.optMimzee+2)-0.5*curAncients.curMimzee*(curAncients.curMimzee+2))))
     if optAncients.optMorg > curAncients.curMorg:
-        optCost += ceil((1-chorDiscount)*(optAncients.optMorg-curAncients.curMorg))
+        optCost['Morg'] = int(ceil((1-chorDiscount)*(optAncients.optMorg-curAncients.curMorg)))
     if optAncients.optSiya > curAncients.curSiya:
-        optCost += ceil((1-chorDiscount)*(0.5*(optAncients.optSiya)*(optAncients.optSiya+2)-0.5*curAncients.curSiya*(curAncients.curSiya+2)))
+        optCost['Siya'] = int(ceil((1-chorDiscount)*(0.5*(optAncients.optSiya)*(optAncients.optSiya+2)-0.5*curAncients.curSiya*(curAncients.curSiya+2))))
     if optAncients.optSolomon > curAncients.curSolomon:
-        optCost += ceil((1-chorDiscount)*(ceil((0.4*optAncients.optSolomon**2.5)-(0.4*curAncients.curSolomon**2.5))))
+        optCost['Solomon'] = int(ceil((1-chorDiscount)*(ceil((0.4*optAncients.optSolomon**2.5)-(0.4*curAncients.curSolomon**2.5)))))
+    optCost['Total'] = sum(optCost.itervalues())
+    optCost['Argaiv'] = "{:,}".format(optCost['Argaiv'])
+    optCost['Atman'] = "{:,}".format(optCost['Atman'])
+    optCost['Bubos'] = "{:,}".format(optCost['Bubos'])
+    optCost['Chronos'] = "{:,}".format(optCost['Chronos'])
+    optCost['Dogcog'] = "{:,}".format(optCost['Dogcog'])
+    optCost['Dora'] = "{:,}".format(optCost['Dora'])
+    optCost['Fortuna'] = "{:,}".format(optCost['Fortuna'])
+    optCost['Kuma'] = "{:,}".format(optCost['Kuma'])
+    optCost['Libertas'] = "{:,}".format(optCost['Libertas'])
+    optCost['Mammon'] = "{:,}".format(optCost['Mammon'])
+    optCost['Mimzee'] = "{:,}".format(optCost['Mimzee'])
+    optCost['Morg'] = "{:,}".format(optCost['Morg'])
+    optCost['Siya'] = "{:,}".format(optCost['Siya'])
+    optCost['Solomon'] = "{:,}".format(optCost['Solomon'])
     return optCost
 
 def findOptSiya(curAncients, calcs):
@@ -238,19 +272,19 @@ def findOptSiya(curAncients, calcs):
     optAncients = Optimal(curAncients, curAncients.curSiya, calcs.alpha)
     optAncients.calcOptimalAncientLvls()
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
-    if optcost > calcs.totalSoulsAvail:
+    if optcost['Total'] > calcs.totalSoulsAvail:
         return 'broke'  ###can't afford to optimize
     
     ##check if they can afford +1 siya
     optAncients = Optimal(curAncients, curAncients.curSiya + 1, calcs.alpha)
     optAncients.calcOptimalAncientLvls()
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
-    if optcost > calcs.totalSoulsAvail:
+    if optcost['Total'] > calcs.totalSoulsAvail:
         return 'optimize'  ###can't afford +1 but can afford optimize
     
     ##
     newsiya = curAncients.curSiya
-    while optcost <= calcs.totalSoulsAvail:
+    while optcost['Total'] <= calcs.totalSoulsAvail:
         newsiya += 1
         optAncients = Optimal(curAncients, newsiya, calcs.alpha)
         optAncients.calcOptimalAncientLvls()
@@ -291,12 +325,12 @@ def getAncientLvlDifferences(curAncients, optAncients):
 def theMonsterMath(input, useAscendSouls):
     savedata = savedecoder.decryptSave(input)
     if savedata in ('Invalid Save File', 'Invalid Save File - bad hash'):
-        return (0, 0, 0, savedata)
+        return (0, 0, 0, 0, savedata)
     curAncients = Current(savedata)
     curAncients.getCurrentAncientLvls()
     
     if curAncients.curSiya == 0:
-        return (0, 0, 0, 'You need to buy Siyalatas!')
+        return (0, 0, 0, 0, 'You need to buy Siyalatas!')
     
     calcs = Calculations(savedata)
     calcs.doTheMath(curAncients.curSolomon, useAscendSouls)
@@ -309,14 +343,15 @@ def theMonsterMath(input, useAscendSouls):
         diff = getAncientLvlDifferences(curAncients, optAncients)
         calcs.findNewTPzone(optAncients.optSolomon, curAncients.curSolomon)
         optAncients.addCommas()
-        return (optAncients, diff, calcs, "<h2>You can't afford to optimize your ancients right now<br>but here are the optimal levels:</h2>")
+        return (optAncients, diff, calcs, optcost, "<h2>You can't afford to optimize your ancients right now<br>but here are the optimal levels:</h2>")
     if optsiya == 'optimize':
         optsiya = curAncients.curSiya
     
     optAncients = Optimal(curAncients, optsiya, calcs.alpha)
     optAncients.calcOptimalAncientLvls()
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
+    optcost['Total'] = "{:,}".format(optcost['Total'])
     diff = getAncientLvlDifferences(curAncients, optAncients)
     calcs.findNewTPzone(optAncients.optSolomon, curAncients.curSolomon)
     optAncients.addCommas()
-    return (optAncients, diff, calcs, '<h2>These are the highest optimal ancient levels you can afford:</h2>')
+    return (optAncients, diff, calcs, optcost, '<h2>These are the highest optimal ancient levels you can afford:</h2>')

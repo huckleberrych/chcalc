@@ -1,4 +1,4 @@
-$def with (optAncients, diff, calcs, msg)
+$def with (optAncients, diff, calcs, optcost, msg)
 
 <center>
 $:msg
@@ -6,80 +6,119 @@ $:msg
 <col width="115">
 <col width="70">
 <col width="70">
+<col width="70">
+<col width="70">
 <tr>
 <th>Ancient</th>
+<th>Current level</th>
 <th>Optimal level</th>
 <th>Levels to add</th>
+<th>HS cost</th>
 </tr>
 <tr>
 <td>Argaiv</td>
-<td>$optAncients.optArgaiv</td>
-<td><b>+$diff['Argaiv']</b></td>
+<td align="right">$optAncients.current.curArgaiv</td>
+<td align="right">$optAncients.optArgaiv</td>
+<td align="right"><b>+$diff['Argaiv']</b></td>
+<td align="right">$optcost['Argaiv']</td>
 </tr>
 <tr>
 <td>Atman</td>
-<td>$optAncients.optAtman</td>
-<td><b>+$diff['Atman']</b></td>
+<td align="right">$optAncients.current.curAtman</td>
+<td align="right">$optAncients.optAtman</td>
+<td align="right"><b>+$diff['Atman']</b></td>
+<td align="right">$optcost['Atman']</td>
 </tr>
 <tr>
 <td>Bubos</td>
-<td>$optAncients.optBubos</td>
-<td><b>+$diff['Bubos']</b></td>
+<td align="right">$optAncients.current.curBubos</td>
+<td align="right">$optAncients.optBubos</td>
+<td align="right"><b>+$diff['Bubos']</b></td>
+<td align="right">$optcost['Bubos']</td>
 </tr>
 <tr>
 <td>Chronos</td>
-<td>$optAncients.optChronos</td>
-<td><b>+$diff['Chronos']</b></td>
+<td align="right">$optAncients.current.curChronos</td>
+<td align="right">$optAncients.optChronos</td>
+<td align="right"><b>+$diff['Chronos']</b></td>
+<td align="right">$optcost['Chronos']</td>
 </tr>
 <tr>
 <td>Dogcog</td>
-<td>$optAncients.optDogcog</td>
-<td><b>+$diff['Dogcog']</b></td>
+<td align="right">$optAncients.current.curDogcog</td>
+<td align="right">$optAncients.optDogcog</td>
+<td align="right"><b>+$diff['Dogcog']</b></td>
+<td align="right">$optcost['Dogcog']</td>
 </tr>
 <tr>
 <td>Dora</td>
-<td>$optAncients.optDora</td>
-<td><b>+$diff['Dora']</b></td>
+<td align="right">$optAncients.current.curDora</td>
+<td align="right">$optAncients.optDora</td>
+<td align="right"><b>+$diff['Dora']</b></td>
+<td align="right">$optcost['Dora']</td>
 </tr>
 <tr>
 <td>Fortuna</td>
-<td>$optAncients.optFortuna</td>
-<td><b>+$diff['Fortuna']</b></td>
+<td align="right">$optAncients.current.curFortuna</td>
+<td align="right">$optAncients.optFortuna</td>
+<td align="right"><b>+$diff['Fortuna']</b></td>
+<td align="right">$optcost['Fortuna']</td>
 </tr>
 <tr>
 <td>Kumawakamaru</td>
-<td>$optAncients.optKuma</td>
-<td><b>+$diff['Kuma']</b></td>
+<td align="right">$optAncients.current.curKuma</td>
+<td align="right">$optAncients.optKuma</td>
+<td align="right"><b>+$diff['Kuma']</b></td>
+<td align="right">$optcost['Kuma']</td>
 </tr>
 <tr>
 <td>Libertas</td>
-<td>$optAncients.optLibertas</td>
-<td><b>+$diff['Libertas']</b></td>
+<td align="right">$optAncients.current.curLibertas</td>
+<td align="right">$optAncients.optLibertas</td>
+<td align="right"><b>+$diff['Libertas']</b></td>
+<td align="right">$optcost['Libertas']</td>
 </tr>
 <tr>
 <td>Mammon</td>
-<td>$optAncients.optMammon</td>
-<td><b>+$diff['Mammon']</b></td>
+<td align="right">$optAncients.current.curMammon</td>
+<td align="right">$optAncients.optMammon</td>
+<td align="right"><b>+$diff['Mammon']</b></td>
+<td align="right">$optcost['Mammon']</td>
 </tr>
 <tr>
 <td>Mimzee</td>
-<td>$optAncients.optMimzee</td>
-<td><b>+$diff['Mimzee']</b></td>
+<td align="right">$optAncients.current.curMimzee</td>
+<td align="right">$optAncients.optMimzee</td>
+<td align="right"><b>+$diff['Mimzee']</b></td>
+<td align="right">$optcost['Mimzee']</td>
 </tr>
 <tr>
 <td>Morgulis</td>
-<td>$optAncients.optMorg</td>
-<td><b>+$diff['Morg']</b></td>
+<td align="right">$optAncients.current.curMorg</td>
+<td align="right">$optAncients.optMorg</td>
+<td align="right"><b>+$diff['Morg']</b></td>
+<td align="right">$optcost['Morg']</td>
 </tr>
 <tr>
 <td>Siyalatas</td>
-<td>$optAncients.optSiya</td>
-<td><b>+$diff['Siya']</b></td>
+<td align="right">$optAncients.current.curSiya</td>
+<td align="right">$optAncients.optSiya</td>
+<td align="right"><b>+$diff['Siya']</b></td>
+<td align="right">$optcost['Siya']</td>
 </tr>
 <tr>
 <td>Solomon</td>
-<td>$optAncients.optSolomon</td>
-<td><b>+$diff['Solomon']</b></td>
+<td align="right">$optAncients.current.curSolomon</td>
+<td align="right">$optAncients.optSolomon</td>
+<td align="right"><b>+$diff['Solomon']</b></td>
+<td align="right">$optcost['Solomon']</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td><b>Total</b></td>
+<td align="right"><b>$optcost['Total']</b></td>
 </tr>
 </table>
 <p>
