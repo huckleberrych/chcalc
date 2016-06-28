@@ -1,5 +1,5 @@
 import savedecoder
-from math import log, floor, ceil, exp, log10
+from math import log, floor, ceil, exp, log10, sqrt
 
 class Current(dict):
 
@@ -281,16 +281,28 @@ def findOptSiya(curAncients, calcs):
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
     if optcost['Total'] > calcs.totalSoulsAvail:
         return 'optimize'  ###can't afford +1 but can afford optimize
-    
-    ##
-    newsiya = curAncients.curSiya
-    while optcost['Total'] <= calcs.totalSoulsAvail:
-        newsiya += 1
+
+    maxSiya = long(floor(-1/2 + sqrt(2*((1-calcs.chorDiscount)*calcs.totalSoulsAvail) + curAncients.curSiya**2 + curAncients.curSiya + 1/4)))  #thanks Holrik, graceoflives, Sugima for help in Discord chat
+    minSiya = long(curAncients.curSiya)
+    newsiya = long((maxSiya - minSiya) / 2 + minSiya)
+    found = False
+    while not found:
         optAncients = Optimal(curAncients, newsiya, calcs.alpha)
         optAncients.calcOptimalAncientLvls()
         optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
-    return max(newsiya - 1, 1) #if they don't have siya, this will return negative and break program. result must be >= 1
-    
+        if optcost['Total'] < calcs.totalSoulsAvail:
+            minSiya = newsiya
+            newsiya = long((maxSiya - minSiya) / 2 + minSiya)
+        elif optcost['Total'] > calcs.totalSoulsAvail:
+            maxSiya = newsiya
+            newsiya = long((maxSiya - minSiya) / 2 + minSiya)
+        elif optcost['Total'] == calcs.totalSoulsAvail:
+            found = True
+        if maxSiya == minSiya+1 or maxSiya == minSiya:
+            newsiya = minSiya
+            found = True
+    return max(newsiya, 1)
+
 def calcSoloMultiplier(curSolomon, ponyboy):                                        ##success!
     if curSolomon < 21:
         soloMultiplier = 1 + (ponyboy + 1) * (curSolomon * 0.05)
