@@ -169,11 +169,16 @@ class Optimal(dict):
 
 class Calculations(dict):
     
-    def __init__(self, savedata, AS=0, tp=0, ascendZone=0, alpha=0,
-                 totalSoulsAvail=0, chorDiscount=0, maxTPreward=0,
-                 soloMultiplier=1, maxTPzone=0, newTPzone=0,
-                 newSoloMultiplier=1):
+    def __init__(self, savedata, xyl=0, chor=0, phan=0, borb=0, pony=0,
+                 AS=0, tp=0, ascendZone=0, alpha=0, totalSoulsAvail=0,
+                 chorDiscount=0, maxTPreward=0, soloMultiplier=1,
+                 maxTPzone=0, newTPzone=0, newSoloMultiplier=1):
         self.savedata = savedata
+        self.xyl = xyl
+        self.chor = chor
+        self.phan = phan
+        self.borb = borb
+        self.pony = pony
         self.AS = AS
         self.tp = tp
         self.ascendZone = ascendZone
@@ -190,18 +195,22 @@ class Calculations(dict):
         if self.savedata.get("ancientSoulsTotal"):
             self.AS = self.savedata["ancientSoulsTotal"]
         if self.savedata.get('outsiders'):
-            self.tp = (50 - 49 * (exp(-self.AS/10000.0))) / 100 + .0005 * int(self.savedata['outsiders']['outsiders']['3']['level'])
+            self.xyl = self.savedata['outsiders']['outsiders']['1']['level']
+            self.chor = self.savedata['outsiders']['outsiders']['2']['level']
+            self.phan = self.savedata['outsiders']['outsiders']['3']['level']
+            self.borb = self.savedata['outsiders']['outsiders']['4']['level']
+            self.pony = self.savedata['outsiders']['outsiders']['5']['level']
+            self.tp = 1 - 0.49 * exp(-self.AS/10000.0) - 0.5 * exp(-self.phan/1000.0)
+            self.soloMultiplier = calcSoloMultiplier(curSolomon, self.pony)
         self.ascendZone = self.savedata["highestFinishedZonePersist"]
         self.alpha = 1.4067 * log(1 + self.tp * 1) / log(ceil(self.ascendZone / 500.0) * 0.005 + 1.14)
         self.totalSoulsAvail = float(self.savedata["heroSouls"])
         if useAscendSouls == 'on':
             self.totalSoulsAvail += float(self.savedata["primalSouls"])
         if self.savedata.get('outsiders'):
-            self.chorDiscount = 1 - 0.95 ** int(self.savedata['outsiders']['outsiders']['2']['level'])
+            self.chorDiscount = 1 - 0.95 ** self.chor
         if self.savedata.get("heroSoulsSacrificed"):
-            self.maxTPreward = float(self.savedata["heroSoulsSacrificed"]) * (0.05 + (int(self.savedata['outsiders']['outsiders']['4']['level']) * 0.005))
-        if self.savedata.get('outsiders'):
-            self.soloMultiplier = calcSoloMultiplier(curSolomon, self.savedata['outsiders']['outsiders']['5']['level'])
+            self.maxTPreward = float(self.savedata["heroSoulsSacrificed"]) * (0.05 + (self.borb * 0.005))
         if self.maxTPreward != 0:
             self.maxTPzone = int((ceil((log(self.maxTPreward / (20 * self.soloMultiplier))) / (log(1 + self.tp))) * 5) + 100)
             
