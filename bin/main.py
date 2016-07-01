@@ -3,25 +3,22 @@ from math import log, floor, ceil, exp, log10, sqrt
 
 class Current(dict):
 
-    def __init__(self, input, curArgaiv=0, curAtman=0, curBubos=0,
-                 curChronos=0, curDogcog=0, curDora=0, curFortuna=0,
-                 curKuma=0, curLibertas=0, curMammon=0, curMimzee=0,
-                 curMorg=0, curSiya=0, curSolomon=0):
+    def __init__(self, input):
         self.input = input
-        self.curArgaiv = curArgaiv
-        self.curAtman = curAtman
-        self.curBubos = curBubos
-        self.curChronos = curChronos
-        self.curDogcog = curDogcog
-        self.curDora = curDora
-        self.curFortuna = curFortuna
-        self.curKuma = curKuma
-        self.curLibertas = curLibertas
-        self.curMammon = curMammon
-        self.curMimzee = curMimzee
-        self.curMorg = curMorg
-        self.curSiya = curSiya
-        self.curSolomon = curSolomon
+        self.curArgaiv = 0
+        self.curAtman = 0
+        self.curBubos = 0
+        self.curChronos = 0
+        self.curDogcog = 0
+        self.curDora = 0
+        self.curFortuna = 0
+        self.curKuma = 0
+        self.curLibertas = 0
+        self.curMammon = 0
+        self.curMimzee = 0
+        self.curMorg = 0
+        self.curSiya = 0
+        self.curSolomon = 0
 
     def getCurrentAncientLvls(self):
         if self.input.get('ancients').get('ancients').get('28'):
@@ -68,27 +65,24 @@ class Current(dict):
                 self.input['ancients']['ancients']['3']['level'])
 
 class Optimal(dict):
-    def __init__(self, current, siya, alpha, optArgaiv=0, optAtman=0,
-                 optBubos=0, optChronos=0, optDogcog=0, optDora=0,
-                 optFortuna=0, optKuma=0, optLibertas=0, optMammon=0,
-                 optMimzee=0, optMorg=0, optSiya=0, optSolomon=0):
+    def __init__(self, current, siya, alpha):
         self.current = current
         self.siya = siya
         self.alpha = alpha
-        self.optArgaiv = optArgaiv
-        self.optAtman = optAtman
-        self.optBubos = optBubos
-        self.optChronos = optChronos
-        self.optDogcog = optDogcog
-        self.optDora = optDora
-        self.optFortuna = optFortuna
-        self.optKuma = optKuma
-        self.optLibertas = optLibertas
-        self.optMammon = optMammon
-        self.optMimzee = optMimzee
-        self.optMorg = optMorg
+        self.optArgaiv = 0
+        self.optAtman = 0
+        self.optBubos = 0
+        self.optChronos = 0
+        self.optDogcog = 0
+        self.optDora = 0
+        self.optFortuna = 0
+        self.optKuma = 0
+        self.optLibertas = 0
+        self.optMammon = 0
+        self.optMimzee = 0
+        self.optMorg = 0
         self.optSiya = int(siya)
-        self.optSolomon = optSolomon
+        self.optSolomon = 0
 
     def calcOptimalAncientLvls(self):
         self.optArgaiv = int(self.siya)
@@ -169,27 +163,24 @@ class Optimal(dict):
 
 class Calculations(dict):
     
-    def __init__(self, savedata, xyl=0, chor=0, phan=0, borb=0, pony=0,
-                 AS=0, tp=0, ascendZone=0, alpha=0, totalSoulsAvail=0,
-                 chorDiscount=0, maxTPreward=0, soloMultiplier=1,
-                 maxTPzone=0, newTPzone=0, newSoloMultiplier=1):
+    def __init__(self, savedata):
         self.savedata = savedata
-        self.xyl = xyl
-        self.chor = chor
-        self.phan = phan
-        self.borb = borb
-        self.pony = pony
-        self.AS = AS
-        self.tp = tp
-        self.ascendZone = ascendZone
-        self.alpha = alpha
-        self.totalSoulsAvail = totalSoulsAvail
-        self.chorDiscount = chorDiscount
-        self.maxTPreward = maxTPreward
-        self.soloMultiplier = soloMultiplier
-        self.maxTPzone = maxTPzone
-        self.newTPzone = newTPzone
-        self.newSoloMultiplier = newSoloMultiplier
+        self.xyl = 0
+        self.chor = 0
+        self.phan = 0
+        self.borb = 0
+        self.pony = 0
+        self.AS = 0
+        self.tp = 0
+        self.ascendZone = 0
+        self.alpha = 0
+        self.totalSoulsAvail = 0
+        self.chorDiscount = 0
+        self.maxTPreward = 0
+        self.soloMultiplier = 1
+        self.maxTPzone = 0
+        self.newTPzone = 0
+        self.newSoloMultiplier = 1
         
     def doTheMath(self, curSolomon, useAscendSouls):
         if self.savedata.get("ancientSoulsTotal"):
@@ -218,7 +209,7 @@ class Calculations(dict):
         #ancient levels have decimals, must check vs our opt (always x.0) so if opt = +0 then maxTPzone = newTPzone
         if floor(optSolomon) != floor(curSolomon) and ceil(optSolomon) != ceil(curSolomon):
             if self.savedata.get('outsiders'):
-                self.newSoloMultiplier = calcSoloMultiplier(optSolomon, self.savedata['outsiders']['outsiders']['5']['level'])
+                self.newSoloMultiplier = calcSoloMultiplier(optSolomon, self.pony)
             if self.maxTPreward != 0:
                 self.newTPzone = int((ceil((log(self.maxTPreward / (20 * self.newSoloMultiplier))) / (log(1 + self.tp))) * 5) + 100)
         else:
@@ -258,21 +249,11 @@ def calcOptCost(curAncients, optAncients, chorDiscount):
         optCost['Siya'] = int(ceil((1-chorDiscount)*(0.5*(optAncients.optSiya)*(optAncients.optSiya+2)-0.5*curAncients.curSiya*(curAncients.curSiya+2))))
     if optAncients.optSolomon > curAncients.curSolomon:
         optCost['Solomon'] = int(ceil((1-chorDiscount)*(ceil((0.4*optAncients.optSolomon**2.5)-(0.4*curAncients.curSolomon**2.5)))))
+    
     optCost['Total'] = sum(optCost.itervalues())
-    optCost['Argaiv'] = "{:,}".format(optCost['Argaiv'])
-    optCost['Atman'] = "{:,}".format(optCost['Atman'])
-    optCost['Bubos'] = "{:,}".format(optCost['Bubos'])
-    optCost['Chronos'] = "{:,}".format(optCost['Chronos'])
-    optCost['Dogcog'] = "{:,}".format(optCost['Dogcog'])
-    optCost['Dora'] = "{:,}".format(optCost['Dora'])
-    optCost['Fortuna'] = "{:,}".format(optCost['Fortuna'])
-    optCost['Kuma'] = "{:,}".format(optCost['Kuma'])
-    optCost['Libertas'] = "{:,}".format(optCost['Libertas'])
-    optCost['Mammon'] = "{:,}".format(optCost['Mammon'])
-    optCost['Mimzee'] = "{:,}".format(optCost['Mimzee'])
-    optCost['Morg'] = "{:,}".format(optCost['Morg'])
-    optCost['Siya'] = "{:,}".format(optCost['Siya'])
-    optCost['Solomon'] = "{:,}".format(optCost['Solomon'])
+    for k in optCost:
+        if k != 'Total':
+            optCost[k] = "{:,}".format(optCost[k])
     return optCost
 
 def findOptSiya(curAncients, calcs):
@@ -361,6 +342,7 @@ def theMonsterMath(input, useAscendSouls):
         optAncients = Optimal(curAncients, int(curAncients.curSiya), calcs.alpha)
         optAncients.calcOptimalAncientLvls()
         optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
+        optcost['Total'] = "{:,}".format(optcost['Total'])
         diff = getAncientLvlDifferences(curAncients, optAncients)
         calcs.findNewTPzone(optAncients.optSolomon, curAncients.curSolomon)
         optAncients.addCommas()
