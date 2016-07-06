@@ -1,17 +1,22 @@
 import savedecoder
 from math import log, floor, ceil, exp, log10, sqrt
 
+MODE = 'idle'
+
 class Current(dict):
 
     def __init__(self, input):
         self.input = input
         self.curArgaiv = 0
         self.curAtman = 0
+        self.curBhaal = 0
         self.curBubos = 0
         self.curChronos = 0
         self.curDogcog = 0
         self.curDora = 0
+        self.curFrags = 0
         self.curFortuna = 0
+        self.curJugs = 0
         self.curKuma = 0
         self.curLibertas = 0
         self.curMammon = 0
@@ -27,6 +32,9 @@ class Current(dict):
         if self.input.get('ancients').get('ancients').get('13'):
             self.curAtman = float(
                 self.input['ancients']['ancients']['13']['level'])
+        if self.input.get('ancients').get('ancients').get('15'):
+            self.curBhaal = float(
+                self.input['ancients']['ancients']['15']['level'])
         if self.input.get('ancients').get('ancients').get('18'):
             self.curBubos = float(
                 self.input['ancients']['ancients']['18']['level'])
@@ -39,9 +47,15 @@ class Current(dict):
         if self.input.get('ancients').get('ancients').get('14'):
             self.curDora = float(
                 self.input['ancients']['ancients']['14']['level'])
+        if self.input.get('ancients').get('ancients').get('19'):
+            self.curFrags = float(
+                self.input['ancients']['ancients']['19']['level'])
         if self.input.get('ancients').get('ancients').get('12'):
             self.curFortuna = float(
                 self.input['ancients']['ancients']['12']['level'])
+        if self.input.get('ancients').get('ancients').get('29'):
+            self.curJugs = float(
+                self.input['ancients']['ancients']['29']['level'])
         if self.input.get('ancients').get('ancients').get('21'):
             self.curKuma = float(
                 self.input['ancients']['ancients']['21']['level'])
@@ -65,17 +79,21 @@ class Current(dict):
                 self.input['ancients']['ancients']['3']['level'])
 
 class Optimal(dict):
-    def __init__(self, current, siya, alpha):
+    def __init__(self, current, siya, calcs):
         self.current = current
         self.siya = siya
-        self.alpha = alpha
+        self.alpha = calcs.alpha
+        self.hybridMultiplier = calcs.hybridMultiplier
         self.optArgaiv = 0
         self.optAtman = 0
+        self.optBhaal = 0
         self.optBubos = 0
         self.optChronos = 0
         self.optDogcog = 0
         self.optDora = 0
+        self.optFrags = 0
         self.optFortuna = 0
+        self.optJugs = 0
         self.optKuma = 0
         self.optLibertas = 0
         self.optMammon = 0
@@ -129,15 +147,22 @@ class Optimal(dict):
             self.optMimzee = int(floor(0.926*self.siya))
             self.optMorg = int(float(self.siya ** 2))
             self.optSolomon = int(floor(self.siya**(0.8)/self.alpha**0.4))
+        if MODE == 'hybrid':
+            self.optBhaal = int(floor(self.siya * self.hybridMultiplier))
+            self.optFrags = int(floor(self.siya * self.hybridMultiplier))
+            self.optJugs = int(floor(self.optFrags ** 0.8))
 
     def addCommas(self):
         self.optArgaiv = "{:,}".format(self.optArgaiv)
         self.optAtman = "{:,}".format(self.optAtman)
+        self.optBhaal = "{:,}".format(self.optBhaal)
         self.optBubos = "{:,}".format(self.optBubos)
         self.optChronos = "{:,}".format(self.optChronos)
         self.optDogcog = "{:,}".format(self.optDogcog)
         self.optDora = "{:,}".format(self.optDora)
+        self.optFrags = "{:,}".format(self.optFrags)
         self.optFortuna = "{:,}".format(self.optFortuna)
+        self.optJugs = "{:,}".format(self.optJugs)
         self.optKuma = "{:,}".format(self.optKuma)
         self.optLibertas = "{:,}".format(self.optLibertas)
         self.optMammon = "{:,}".format(self.optMammon)
@@ -147,11 +172,14 @@ class Optimal(dict):
         self.optSolomon = "{:,}".format(self.optSolomon)
         self.current.curArgaiv = "{:,}".format(int(self.current.curArgaiv))
         self.current.curAtman = "{:,}".format(int(self.current.curAtman))
+        self.current.curBhaal = "{:,}".format(int(self.current.curBhaal))
         self.current.curBubos = "{:,}".format(int(self.current.curBubos))
         self.current.curChronos = "{:,}".format(int(self.current.curChronos))
         self.current.curDogcog = "{:,}".format(int(self.current.curDogcog))
         self.current.curDora = "{:,}".format(int(self.current.curDora))
+        self.current.curFrags = "{:,}".format(int(self.current.curFrags))
         self.current.curFortuna = "{:,}".format(int(self.current.curFortuna))
+        self.current.curJugs = "{:,}".format(int(self.current.curJugs))
         self.current.curKuma = "{:,}".format(int(self.current.curKuma))
         self.current.curLibertas = "{:,}".format(int(self.current.curLibertas))
         self.current.curMammon = "{:,}".format(int(self.current.curMammon))
@@ -159,11 +187,10 @@ class Optimal(dict):
         self.current.curMorg = "{:,}".format(int(self.current.curMorg))
         self.current.curSiya = "{:,}".format(int(self.current.curSiya))
         self.current.curSolomon = "{:,}".format(int(self.current.curSolomon))
-        
 
 class Calculations(dict):
     
-    def __init__(self, savedata):
+    def __init__(self, savedata, hybridMultiplier):
         self.savedata = savedata
         self.xyl = 0
         self.chor = 0
@@ -181,6 +208,7 @@ class Calculations(dict):
         self.maxTPzone = 0
         self.newTPzone = 0
         self.newSoloMultiplier = 1
+        self.hybridMultiplier = hybridMultiplier
         
     def doTheMath(self, curSolomon, useAscendSouls):
         if self.savedata.get("ancientSoulsTotal"):
@@ -217,14 +245,17 @@ class Calculations(dict):
 
 def calcOptCost(curAncients, optAncients, chorDiscount):
     #optCost = 0
-    optCost = {'Argaiv':0, 'Atman':0, 'Bubos':0, 'Chronos':0,
-               'Dogcog':0, 'Dora':0, 'Fortuna':0, 'Kuma':0,
-               'Libertas':0, 'Mammon':0, 'Mimzee':0, 'Morg':0,
-               'Siya':0, 'Solomon':0}
+    optCost = {'Argaiv':0, 'Atman':0, 'Bhaal': 0, 'Bubos':0,
+               'Chronos':0, 'Dogcog':0, 'Dora':0, 'Frags': 0,
+               'Fortuna':0, 'Jugs':0, 'Kuma':0, 'Libertas':0,
+               'Mammon':0, 'Mimzee':0, 'Morg':0, 'Siya':0,
+               'Solomon':0}
     if optAncients.optArgaiv > curAncients.curArgaiv:
         optCost['Argaiv'] = int(ceil((1 - chorDiscount)*(0.5*(optAncients.optArgaiv)*(optAncients.optArgaiv+2)-0.5*curAncients.curArgaiv*(curAncients.curArgaiv+2))))
     if optAncients.optAtman > curAncients.curAtman:
         optCost['Atman'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optAtman+1)-1)-(2**(curAncients.curAtman+1)-1)))))
+    if optAncients.optBhaal > curAncients.curBhaal:
+        optCost['Bhaal'] = int(ceil((1 - chorDiscount)*(0.5*(optAncients.optBhaal)*(optAncients.optBhaal+2)-0.5*curAncients.curBhaal*(curAncients.curBhaal+2))))
     if optAncients.optBubos > curAncients.curBubos:
         optCost['Bubos'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optBubos+1)-1)-(2**(curAncients.curBubos+1)-1)))))
     if optAncients.optChronos > curAncients.curChronos:
@@ -233,8 +264,12 @@ def calcOptCost(curAncients, optAncients, chorDiscount):
         optCost['Dogcog'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optDogcog+1)-1)-(2**(curAncients.curDogcog+1)-1)))))
     if optAncients.optDora > curAncients.curDora:
         optCost['Dora'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optDora+1)-1)-(2**(curAncients.curDora+1)-1)))))
+    if optAncients.optFrags > curAncients.curFrags:
+        optCost['Frags'] = int(ceil((1 - chorDiscount)*(0.5*(optAncients.optFrags)*(optAncients.optFrags+2)-0.5*curAncients.curFrags*(curAncients.curFrags+2))))
     if optAncients.optFortuna > curAncients.curFortuna:
         optCost['Fortuna'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optFortuna+1)-1)-(2**(curAncients.curFortuna+1)-1)))))
+    if optAncients.optJugs > curAncients.curJugs:
+        optCost['Jugs'] = int(ceil((1-chorDiscount)*(ceil((0.4*optAncients.optJugs**2.5)-(0.4*curAncients.curJugs**2.5)))))
     if optAncients.optKuma > curAncients.curKuma:
         optCost['Kuma'] = int(ceil(((1-chorDiscount)*((2**(optAncients.optKuma+1)-1)-(2**(curAncients.curKuma+1)-1)))))
     if optAncients.optLibertas > curAncients.curLibertas:
@@ -259,33 +294,33 @@ def calcOptCost(curAncients, optAncients, chorDiscount):
 def findOptSiya(curAncients, calcs):
     
     ##check if they can afford to optimize
-    optAncients = Optimal(curAncients, curAncients.curSiya, calcs.alpha)
+    optAncients = Optimal(curAncients, curAncients.curSiya, calcs)
     optAncients.calcOptimalAncientLvls()
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
     if optcost['Total'] > calcs.totalSoulsAvail:
         return 'broke'  ###can't afford to optimize
     
     ##check if they can afford +1 siya
-    optAncients = Optimal(curAncients, curAncients.curSiya + 1, calcs.alpha)
+    optAncients = Optimal(curAncients, curAncients.curSiya + 1, calcs)
     optAncients.calcOptimalAncientLvls()
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
     if optcost['Total'] > calcs.totalSoulsAvail:
         return 'optimize'  ###can't afford +1 but can afford optimize
 
-    maxSiya = long(floor(-1/2 + sqrt(2*((1-calcs.chorDiscount)*calcs.totalSoulsAvail) + curAncients.curSiya**2 + curAncients.curSiya + 1/4)))  #thanks Holrik, graceoflives, Sugima for help in Discord chat
-    minSiya = long(curAncients.curSiya)
-    newsiya = long((maxSiya - minSiya) / 2 + minSiya)
+    maxSiya = int(floor(-1/2 + sqrt(2*((1-calcs.chorDiscount)*calcs.totalSoulsAvail) + curAncients.curSiya**2 + curAncients.curSiya + 1/4)))  #thanks Holrik, graceoflives, Sugima for help in Discord chat
+    minSiya = int(curAncients.curSiya)
+    newsiya = int((maxSiya - minSiya) / 2 + minSiya)
     found = False
     while not found:
-        optAncients = Optimal(curAncients, newsiya, calcs.alpha)
+        optAncients = Optimal(curAncients, newsiya, calcs)
         optAncients.calcOptimalAncientLvls()
         optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
         if optcost['Total'] < calcs.totalSoulsAvail:
             minSiya = newsiya
-            newsiya = long((maxSiya - minSiya) / 2 + minSiya)
+            newsiya = int((maxSiya - minSiya) / 2 + minSiya)
         elif optcost['Total'] > calcs.totalSoulsAvail:
             maxSiya = newsiya
-            newsiya = long((maxSiya - minSiya) / 2 + minSiya)
+            newsiya = int((maxSiya - minSiya) / 2 + minSiya)
         elif optcost['Total'] == calcs.totalSoulsAvail:
             found = True
         if maxSiya == minSiya+1 or maxSiya == minSiya:
@@ -310,11 +345,14 @@ def getAncientLvlDifferences(curAncients, optAncients):
     diff = {}
     diff['Argaiv'] = "{:,}".format(max(int(optAncients.optArgaiv - curAncients.curArgaiv), 0))
     diff['Atman'] = "{:,}".format(max(int(optAncients.optAtman - curAncients.curAtman), 0))
+    diff['Bhaal'] = "{:,}".format(max(int(optAncients.optBhaal - curAncients.curBhaal), 0))
     diff['Bubos'] = "{:,}".format(max(int(optAncients.optBubos - curAncients.curBubos), 0))
     diff['Chronos'] = "{:,}".format(max(int(optAncients.optChronos - curAncients.curChronos), 0))
     diff['Dogcog'] = "{:,}".format(max(int(optAncients.optDogcog - curAncients.curDogcog), 0))
     diff['Dora'] = "{:,}".format(max(int(optAncients.optDora - curAncients.curDora), 0))
+    diff['Frags'] = "{:,}".format(max(int(optAncients.optFrags - curAncients.curFrags), 0))
     diff['Fortuna'] = "{:,}".format(max(int(optAncients.optFortuna - curAncients.curFortuna), 0))
+    diff['Jugs'] = "{:,}".format(max(int(optAncients.optJugs - curAncients.curJugs), 0))
     diff['Kuma'] = "{:,}".format(max(int(optAncients.optKuma - curAncients.curKuma), 0))
     diff['Libertas'] = "{:,}".format(max(int(optAncients.optLibertas - curAncients.curLibertas), 0))
     diff['Mammon'] = "{:,}".format(max(int(optAncients.optMammon - curAncients.curMammon), 0))
@@ -324,7 +362,9 @@ def getAncientLvlDifferences(curAncients, optAncients):
     diff['Solomon'] = "{:,}".format(max(int(optAncients.optSolomon - curAncients.curSolomon), 0))
     return diff
 
-def theMonsterMath(input, useAscendSouls):
+def theMonsterMath(input, useAscendSouls, mode, hybridMultiplier):
+    global MODE
+    MODE = mode
     savedata = savedecoder.decryptSave(input)
     if savedata in ('Invalid Save File', 'Invalid Save File - bad hash'):
         return (0, 0, 0, 0, savedata)
@@ -334,12 +374,12 @@ def theMonsterMath(input, useAscendSouls):
     if curAncients.curSiya == 0:
         return (0, 0, 0, 0, 'You need to buy Siyalatas!')
     
-    calcs = Calculations(savedata)
+    calcs = Calculations(savedata, hybridMultiplier)
     calcs.doTheMath(curAncients.curSolomon, useAscendSouls)
     
     optsiya = findOptSiya(curAncients, calcs)
     if optsiya == 'broke':
-        optAncients = Optimal(curAncients, int(curAncients.curSiya), calcs.alpha)
+        optAncients = Optimal(curAncients, int(curAncients.curSiya), calcs)
         optAncients.calcOptimalAncientLvls()
         optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
         optcost['Total'] = "{:,}".format(optcost['Total'])
@@ -350,7 +390,7 @@ def theMonsterMath(input, useAscendSouls):
     if optsiya == 'optimize':
         optsiya = curAncients.curSiya
     
-    optAncients = Optimal(curAncients, optsiya, calcs.alpha)
+    optAncients = Optimal(curAncients, optsiya, calcs)
     optAncients.calcOptimalAncientLvls()
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
     optcost['Total'] = "{:,}".format(optcost['Total'])

@@ -1,3 +1,8 @@
+<style>
+.set-width {
+    width: 50px;
+}
+</style>
 <center>
 <h1>Huckleberry's ClickerHeroes Ancients Calculator</h1>
 <br>
@@ -7,10 +12,14 @@
 <form action="/" method="POST" enctype="multipart/form-data" action="">
     <input type="text" name="save"> <br/>
     <input type="checkbox" name="useAscendSouls" checked>Include souls gained after ascension<br>
-    <br/>
+    <br>
+    <input type="radio" name="mode" value="idle" checked> Idle
+    <input type="radio" name="mode" value="hybrid"> Hybrid<br>
+    <input type="number" name="hybridMultiplier" value="0.1" class="set-width" step="0.05"> Frags:Siya ratio (Hybrid only)
+    <br>
+    <br>
     <input type="submit" value="Calculate!"/>
 </form>
-<br>
 <br>
 <h2>How it works:</h2>
 This calculator takes your save and finds your total souls available<br>
@@ -18,11 +27,10 @@ This calculator takes your save and finds your total souls available<br>
 and calculates the highest optimal levels that you can afford for each of the 14 main ancients, <br>
 according to the <a HREF="https://www.reddit.com/r/ClickerHeroes/comments/4naohc/math_and_transcendance/">math</a> by <a HREF="https://www.reddit.com/user/sugima">Sugima</a>.
 <p>
-<p>Currently, this calculator is built around an idle playstyle.  Active ancients and hybrid builds are not yet considered.<br>
+<p>Currently, this calculator supports idle and hybrid playstyles.  Active builds are not yet considered.<br>
 See <a HREF="https://www.reddit.com/r/ClickerHeroes/comments/4naohc/math_and_transcendance/d48ruke?context=1">this post</a> for the differences.<br>
 <p>
 <p>This is not intended as an early-game calculator.  It is currently intended for use post-transcension once you have most of these ancients.</p>
-<br>
 <p><font size=3><a HREF="http://www.clickerheroes.com">Play ClickerHeroes</a> | <a HREF="http://www.reddit.com/r/clickerheroes">Visit the ClickerHeroes subreddit</a> | <a HREF="changelog">Changelog</a></font></p>
 </center>
 </body>
