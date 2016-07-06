@@ -153,40 +153,143 @@ class Optimal(dict):
             self.optJugs = int(floor(self.optFrags ** 0.8))
 
     def addCommas(self):
-        self.optArgaiv = "{:,}".format(self.optArgaiv)
-        self.optAtman = "{:,}".format(self.optAtman)
-        self.optBhaal = "{:,}".format(self.optBhaal)
-        self.optBubos = "{:,}".format(self.optBubos)
-        self.optChronos = "{:,}".format(self.optChronos)
-        self.optDogcog = "{:,}".format(self.optDogcog)
-        self.optDora = "{:,}".format(self.optDora)
-        self.optFrags = "{:,}".format(self.optFrags)
-        self.optFortuna = "{:,}".format(self.optFortuna)
-        self.optJugs = "{:,}".format(self.optJugs)
-        self.optKuma = "{:,}".format(self.optKuma)
-        self.optLibertas = "{:,}".format(self.optLibertas)
-        self.optMammon = "{:,}".format(self.optMammon)
-        self.optMimzee = "{:,}".format(self.optMimzee)
-        self.optMorg = "{:,}".format(self.optMorg)
-        self.optSiya = "{:,}".format(self.optSiya)
-        self.optSolomon = "{:,}".format(self.optSolomon)
-        self.current.curArgaiv = "{:,}".format(int(self.current.curArgaiv))
-        self.current.curAtman = "{:,}".format(int(self.current.curAtman))
-        self.current.curBhaal = "{:,}".format(int(self.current.curBhaal))
-        self.current.curBubos = "{:,}".format(int(self.current.curBubos))
-        self.current.curChronos = "{:,}".format(int(self.current.curChronos))
-        self.current.curDogcog = "{:,}".format(int(self.current.curDogcog))
-        self.current.curDora = "{:,}".format(int(self.current.curDora))
-        self.current.curFrags = "{:,}".format(int(self.current.curFrags))
-        self.current.curFortuna = "{:,}".format(int(self.current.curFortuna))
-        self.current.curJugs = "{:,}".format(int(self.current.curJugs))
-        self.current.curKuma = "{:,}".format(int(self.current.curKuma))
-        self.current.curLibertas = "{:,}".format(int(self.current.curLibertas))
-        self.current.curMammon = "{:,}".format(int(self.current.curMammon))
-        self.current.curMimzee = "{:,}".format(int(self.current.curMimzee))
-        self.current.curMorg = "{:,}".format(int(self.current.curMorg))
-        self.current.curSiya = "{:,}".format(int(self.current.curSiya))
-        self.current.curSolomon = "{:,}".format(int(self.current.curSolomon))
+        if self.optArgaiv > 1e9:
+            self.optArgaiv = "{:.3E}".format(self.optArgaiv)
+        else:
+            self.optArgaiv = "{:,}".format(self.optArgaiv)
+        if self.optAtman > 1e9:
+            self.optAtman = "{:.3E}".format(self.optAtman)
+        else:
+            self.optAtman = "{:,}".format(self.optAtman)
+        if self.optBhaal > 1e9:
+            self.optBhaal = "{:.3E}".format(self.optBhaal)
+        else:
+            self.optBhaal = "{:,}".format(self.optBhaal)
+        if self.optBubos > 1e9:
+            self.optBubos = "{:.3E}".format(self.optBubos)
+        else:
+            self.optBubos = "{:,}".format(self.optBubos)
+        if self.optChronos > 1e9:
+            self.optChronos = "{:.3E}".format(self.optChronos)
+        else:
+            self.optChronos = "{:,}".format(self.optChronos)
+        if self.optDogcog > 1e9:
+            self.optDogcog = "{:.3E}".format(self.optDogcog)
+        else:
+            self.optDogcog = "{:,}".format(self.optDogcog)
+        if self.optDora > 1e9:
+            self.optDora = "{:.3E}".format(self.optDora)
+        else:
+            self.optDora = "{:,}".format(self.optDora)
+        if self.optFrags > 1e9:
+            self.optFrags = "{:.3E}".format(self.optFrags)
+        else:
+            self.optFrags = "{:,}".format(self.optFrags)
+        if self.optFortuna > 1e9:
+            self.optFortuna = "{:.3E}".format(self.optFortuna)
+        else:
+            self.optFortuna = "{:,}".format(self.optFortuna)
+        if self.optJugs > 1e9:
+            self.optJugs = "{:.3E}".format(self.optJugs)
+        else:
+            self.optJugs = "{:,}".format(self.optJugs)
+        if self.optKuma > 1e9:
+            self.optKuma = "{:.3E}".format(self.optKuma)
+        else:
+            self.optKuma = "{:,}".format(self.optKuma)
+        if self.optLibertas > 1e9:
+            self.optLibertas = "{:.3E}".format(self.optLibertas)
+        else:
+            self.optLibertas = "{:,}".format(self.optLibertas)
+        if self.optMammon > 1e9:
+            self.optMammon = "{:.3E}".format(self.optMammon)
+        else:
+            self.optMammon = "{:,}".format(self.optMammon)
+        if self.optMimzee > 1e9:
+            self.optMimzee = "{:.3E}".format(self.optMimzee)
+        else:
+            self.optMimzee = "{:,}".format(self.optMimzee)
+        if self.optMorg > 1e9:
+            self.optMorg = "{:.3E}".format(self.optMorg)
+        else:
+            self.optMorg = "{:,}".format(self.optMorg)
+        if self.optSiya > 1e9:
+            self.optSiya = "{:.3E}".format(self.optSiya)
+        else:
+            self.optSiya = "{:,}".format(self.optSiya)
+        if self.optSolomon > 1e9:
+            self.optSolomon = "{:.3E}".format(self.optSolomon)
+        else:
+            self.optSolomon = "{:,}".format(self.optSolomon)
+        
+        if self.current.curArgaiv > 1e9:
+            self.current.curArgaiv = "{:.3E}".format(self.current.curArgaiv)
+        else:
+            self.current.curArgaiv = "{:,}".format(int(self.current.curArgaiv))
+        if self.current.curAtman > 1e9:
+            self.current.curAtman = "{:.3E}".format(self.current.curAtman)
+        else:
+            self.current.curAtman = "{:,}".format(int(self.current.curAtman))
+        if self.current.curBhaal > 1e9:
+            self.current.curBhaal = "{:.3E}".format(self.current.curBhaal)
+        else:
+            self.current.curBhaal = "{:,}".format(int(self.current.curBhaal))
+        if self.current.curBubos > 1e9:
+            self.current.curBubos = "{:.3E}".format(self.current.curBubos)
+        else:
+            self.current.curBubos = "{:,}".format(int(self.current.curBubos))
+        if self.current.curChronos > 1e9:
+            self.current.curChronos = "{:.3E}".format(self.current.curChronos)
+        else:
+            self.current.curChronos = "{:,}".format(int(self.current.curChronos))
+        if self.current.curDogcog > 1e9:
+            self.current.curDogcog = "{:.3E}".format(self.current.curDogcog)
+        else:
+            self.current.curDogcog = "{:,}".format(int(self.current.curDogcog))
+        if self.current.curDora > 1e9:
+            self.current.curDora = "{:.3E}".format(self.current.curDora)
+        else:
+            self.current.curDora = "{:,}".format(int(self.current.curDora))
+        if self.current.curFrags > 1e9:
+            self.current.curFrags = "{:.3E}".format(self.current.curFrags)
+        else:
+            self.current.curFrags = "{:,}".format(int(self.current.curFrags))
+        if self.current.curFortuna > 1e9:
+            self.current.curFortuna = "{:.3E}".format(self.current.curFortuna)
+        else:
+            self.current.curFortuna = "{:,}".format(int(self.current.curFortuna))
+        if self.current.curJugs > 1e9:
+            self.current.curJugs = "{:.3E}".format(self.current.curJugs)
+        else:
+            self.current.curJugs = "{:,}".format(int(self.current.curJugs))
+        if self.current.curKuma > 1e9:
+            self.current.curKuma = "{:.3E}".format(self.current.curKuma)
+        else:
+            self.current.curKuma = "{:,}".format(int(self.current.curKuma))
+        if self.current.curLibertas > 1e9:
+            self.current.curLibertas = "{:.3E}".format(self.current.curLibertas)
+        else:
+            self.current.curLibertas = "{:,}".format(int(self.current.curLibertas))
+        if self.current.curMammon > 1e9:
+            self.current.curMammon = "{:.3E}".format(self.current.curMammon)
+        else:
+            self.current.curMammon = "{:,}".format(int(self.current.curMammon))
+        if self.current.curMimzee > 1e9:
+            self.current.curMimzee = "{:.3E}".format(self.current.curMimzee)
+        else:
+            self.current.curMimzee = "{:,}".format(int(self.current.curMimzee))
+        if self.current.curMorg > 1e9:
+            self.current.curMorg = "{:.3E}".format(self.current.curMorg)
+        else:
+            self.current.curMorg = "{:,}".format(int(self.current.curMorg))
+        if self.current.curSiya > 1e9:
+            self.current.curSiya = "{:.3E}".format(self.current.curSiya)
+        else:
+            self.current.curSiya = "{:,}".format(int(self.current.curSiya))
+        if self.current.curSolomon > 1e9:
+            self.current.curSolomon = "{:.3E}".format(self.current.curSolomon)
+        else:
+            self.current.curSolomon = "{:,}".format(int(self.current.curSolomon))
 
 class Calculations(dict):
     
@@ -287,7 +390,9 @@ def calcOptCost(curAncients, optAncients, chorDiscount):
     
     optCost['Total'] = sum(optCost.itervalues())
     for k in optCost:
-        if k != 'Total':
+        if k != 'Total' and optCost[k] > 1e9:
+            optCost[k] = "{:.3E}".format(optCost[k])
+        elif k != 'Total':
             optCost[k] = "{:,}".format(optCost[k])
     return optCost
 
@@ -343,23 +448,28 @@ def calcSoloMultiplier(curSolomon, ponyboy):                                    
 
 def getAncientLvlDifferences(curAncients, optAncients):
     diff = {}
-    diff['Argaiv'] = "{:,}".format(max(int(optAncients.optArgaiv - curAncients.curArgaiv), 0))
-    diff['Atman'] = "{:,}".format(max(int(optAncients.optAtman - curAncients.curAtman), 0))
-    diff['Bhaal'] = "{:,}".format(max(int(optAncients.optBhaal - curAncients.curBhaal), 0))
-    diff['Bubos'] = "{:,}".format(max(int(optAncients.optBubos - curAncients.curBubos), 0))
-    diff['Chronos'] = "{:,}".format(max(int(optAncients.optChronos - curAncients.curChronos), 0))
-    diff['Dogcog'] = "{:,}".format(max(int(optAncients.optDogcog - curAncients.curDogcog), 0))
-    diff['Dora'] = "{:,}".format(max(int(optAncients.optDora - curAncients.curDora), 0))
-    diff['Frags'] = "{:,}".format(max(int(optAncients.optFrags - curAncients.curFrags), 0))
-    diff['Fortuna'] = "{:,}".format(max(int(optAncients.optFortuna - curAncients.curFortuna), 0))
-    diff['Jugs'] = "{:,}".format(max(int(optAncients.optJugs - curAncients.curJugs), 0))
-    diff['Kuma'] = "{:,}".format(max(int(optAncients.optKuma - curAncients.curKuma), 0))
-    diff['Libertas'] = "{:,}".format(max(int(optAncients.optLibertas - curAncients.curLibertas), 0))
-    diff['Mammon'] = "{:,}".format(max(int(optAncients.optMammon - curAncients.curMammon), 0))
-    diff['Mimzee'] = "{:,}".format(max(int(optAncients.optMimzee - curAncients.curMimzee), 0))
-    diff['Morg'] = "{:,}".format(max(int(optAncients.optMorg - curAncients.curMorg), 0))
-    diff['Siya'] = "{:,}".format(max(int(optAncients.optSiya - curAncients.curSiya), 0))
-    diff['Solomon'] = "{:,}".format(max(int(optAncients.optSolomon - curAncients.curSolomon), 0))
+    diff['Argaiv'] = max(int(optAncients.optArgaiv - curAncients.curArgaiv), 0)
+    diff['Atman'] = max(int(optAncients.optAtman - curAncients.curAtman), 0)
+    diff['Bhaal'] = max(int(optAncients.optBhaal - curAncients.curBhaal), 0)
+    diff['Bubos'] = max(int(optAncients.optBubos - curAncients.curBubos), 0)
+    diff['Chronos'] = max(int(optAncients.optChronos - curAncients.curChronos), 0)
+    diff['Dogcog'] = max(int(optAncients.optDogcog - curAncients.curDogcog), 0)
+    diff['Dora'] = max(int(optAncients.optDora - curAncients.curDora), 0)
+    diff['Frags'] = max(int(optAncients.optFrags - curAncients.curFrags), 0)
+    diff['Fortuna'] = max(int(optAncients.optFortuna - curAncients.curFortuna), 0)
+    diff['Jugs'] = max(int(optAncients.optJugs - curAncients.curJugs), 0)
+    diff['Kuma'] = max(int(optAncients.optKuma - curAncients.curKuma), 0)
+    diff['Libertas'] = max(int(optAncients.optLibertas - curAncients.curLibertas), 0)
+    diff['Mammon'] = max(int(optAncients.optMammon - curAncients.curMammon), 0)
+    diff['Mimzee'] = max(int(optAncients.optMimzee - curAncients.curMimzee), 0)
+    diff['Morg'] = max(int(optAncients.optMorg - curAncients.curMorg), 0)
+    diff['Siya'] = max(int(optAncients.optSiya - curAncients.curSiya), 0)
+    diff['Solomon'] = max(int(optAncients.optSolomon - curAncients.curSolomon), 0)
+    for k in diff:
+        if diff[k] > 1e9:
+            diff[k] = "{:.3E}".format(diff[k])
+        else:
+            diff[k] = "{:,}".format(diff[k])
     return diff
 
 def theMonsterMath(input, useAscendSouls, mode, hybridMultiplier):
@@ -382,7 +492,10 @@ def theMonsterMath(input, useAscendSouls, mode, hybridMultiplier):
         optAncients = Optimal(curAncients, int(curAncients.curSiya), calcs)
         optAncients.calcOptimalAncientLvls()
         optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
-        optcost['Total'] = "{:,}".format(optcost['Total'])
+        if optcost['Total'] > 1e9:
+            optcost['Total'] = "{:.3E}".format(optcost['Total'])
+        else:
+            optcost['Total'] = "{:,}".format(optcost['Total'])
         diff = getAncientLvlDifferences(curAncients, optAncients)
         calcs.findNewTPzone(optAncients.optSolomon, curAncients.curSolomon)
         optAncients.addCommas()
@@ -393,7 +506,10 @@ def theMonsterMath(input, useAscendSouls, mode, hybridMultiplier):
     optAncients = Optimal(curAncients, optsiya, calcs)
     optAncients.calcOptimalAncientLvls()
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
-    optcost['Total'] = "{:,}".format(optcost['Total'])
+    if optcost['Total'] > 1e9:
+        optcost['Total'] = "{:.3E}".format(optcost['Total'])
+    else:
+        optcost['Total'] = "{:,}".format(optcost['Total'])
     diff = getAncientLvlDifferences(curAncients, optAncients)
     calcs.findNewTPzone(optAncients.optSolomon, curAncients.curSolomon)
     optAncients.addCommas()
