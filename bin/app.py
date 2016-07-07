@@ -22,16 +22,16 @@ class Index(object):
 
         form = web.input(save="", useAscendSouls='off', mode='idle')
 
-        optAncients, diff, calcs, optcost, msg = main.theMonsterMath(form.save, form.useAscendSouls, form.mode, float(form.hybridMultiplier))
-        
+        curAncients, optAncients, diff, calcs, optcost, msg = main.theMonsterMath(form.save, form.useAscendSouls, form.mode, float(form.hybridMultiplier))
+
         if msg in ('You need to buy Siyalatas!',
                        'Invalid Save File',
                        'Invalid Save File - bad hash'):
             return render.fail(msg = msg)
         elif form.mode == 'hybrid':
-            return render.index_hybrid(optAncients, diff, calcs, optcost, msg)
+            return render.index_hybrid(curAncients, optAncients, diff, calcs, optcost, msg)
         else:
-            return render.index_idle(optAncients, diff, calcs, optcost, msg)
+            return render.index_idle(curAncients, optAncients, diff, calcs, optcost, msg)
 
 if __name__ == "__main__":
     app.run()
