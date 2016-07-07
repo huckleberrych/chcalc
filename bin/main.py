@@ -75,7 +75,7 @@ def getCurrentAncientLvls(input):
     return curAncients
 
 def calcOptimalAncientLvls(curAncients, siya, calcs):
-    optAncients = {'Argaiv':siya,
+    optAncients = {'Argaiv':0,
                    'Atman':0,
                    'Bhaal':0,
                    'Bubos':0,
@@ -92,6 +92,11 @@ def calcOptimalAncientLvls(curAncients, siya, calcs):
                    'Morg':0,
                    'Siya':siya,
                    'Solomon':0}
+    if MODE == 'hybrid':
+        optAncients['Bhaal'] = int(floor(siya * calcs.hybridMultiplier))
+        optAncients['Frags'] = int(floor(siya * calcs.hybridMultiplier))
+        optAncients['Jugs'] = int(floor(optAncients['Frags'] ** 0.8))
+    optAncients['Argaiv'] = max(optAncients['Frags'], optAncients['Siya'])
     if calcs.alpha != 0:
         optAncients['Atman'] = int(
             floor(2.832*log(siya)
@@ -131,14 +136,11 @@ def calcOptimalAncientLvls(curAncients, siya, calcs):
             - 7.014)
             )
         optAncients['Libertas'] = int(floor(0.926*siya))
-        optAncients['Mammon'] = int(floor(0.926*siya))
-        optAncients['Mimzee'] = int(floor(0.926*siya))
+        optAncients['Mammon'] = int(floor(0.926*optAncients['Argaiv']))
+        optAncients['Mimzee'] = int(floor(0.926*optAncients['Argaiv']))
         optAncients['Morg'] = int(float(siya ** 2))
         optAncients['Solomon'] = int(floor(siya**(0.8)/calcs.alpha**0.4))
-    if MODE == 'hybrid':
-        optAncients['Bhaal'] = int(floor(siya * calcs.hybridMultiplier))
-        optAncients['Frags'] = int(floor(siya * calcs.hybridMultiplier))
-        optAncients['Jugs'] = int(floor(optAncients['Frags'] ** 0.8))
+
     return optAncients
 
 def prepForOutput(input):
