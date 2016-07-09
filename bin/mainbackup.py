@@ -93,47 +93,46 @@ def calcOptimalAncientLvls(curAncients, siya, calcs):
                    'Siya':siya,
                    'Solomon':0}
     if MODE == 'hybrid':
+        optAncients['Bhaal'] = round(siya * calcs.hybridMultiplier)
         optAncients['Frags'] = round(siya * calcs.hybridMultiplier)
-        optAncients['Bhaal'] = optAncients['Frags']
         optAncients['Jugs'] = round(optAncients['Frags'] ** 0.8)
-    base = max(optAncients['Frags'], optAncients['Siya'])
-    optAncients['Argaiv'] = base
+    optAncients['Argaiv'] = max(optAncients['Frags'], optAncients['Siya'])
     if calcs.alpha != 0:
-        optAncients['Atman'] = ceil(
-            2.832*log(base)
+        optAncients['Atman'] = round(
+            2.832*log(siya)
             - 1.416*log(calcs.alpha)
             - 1.416*log(4.0/3-exp(-0.013*curAncients['Atman']))
             -6.613)
-        optAncients['Bubos'] = ceil(
-            2.8*log(base)
+        optAncients['Bubos'] = round(
+            2.8*log(siya)
             - 1.4*log(1+exp(-0.02*curAncients['Bubos']))
             - 5.94)
-        optAncients['Chronos'] = ceil(
-            2.75*log(base)
+        optAncients['Chronos'] = round(
+            2.75*log(siya)
             - 1.375*log(2-exp(-0.034*curAncients['Chronos']))
             - 5.1)
-        optAncients['Dogcog'] = ceil(
-            2.844*log(base)
+        optAncients['Dogcog'] = round(
+            2.844*log(siya)
             - 1.422*log(1.0/99 + exp((-0.01)*curAncients['Dogcog']))
             - 7.232)
-        optAncients['Dora'] = ceil(
-            2.877*log(base)
+        optAncients['Dora'] = round(
+            2.877*log(siya)
             - 1.4365*log(100.0/99-exp(-0.002*curAncients['Dora']))
             - 9.63)
-        optAncients['Fortuna'] = ceil(
-            2.875*log(base)
+        optAncients['Fortuna'] = round(
+            2.875*log(siya)
             - 1.4375*log(10.0/9-exp(-0.0025*curAncients['Fortuna']))
             - 9.3)
-        optAncients['Kuma'] = ceil(
-            2.844*log(base)
+        optAncients['Kuma'] = round(
+            2.844*log(siya)
             - 1.422*log(calcs.alpha)
             - 1.422*log(0.25 + exp(-0.01*curAncients['Kuma']))
             - 7.014)
-        optAncients['Libertas'] = ceil(0.926*siya)
-        optAncients['Mammon'] = ceil(0.926*base)
-        optAncients['Mimzee'] = ceil(0.926*base)
-        optAncients['Morg'] = (base ** 2)
-        optAncients['Solomon'] = ceil(base**(0.8)/calcs.alpha**0.4)
+        optAncients['Libertas'] = round(floor(0.926*siya))
+        optAncients['Mammon'] = round(floor(0.926*optAncients['Argaiv']))
+        optAncients['Mimzee'] = round(floor(0.926*optAncients['Argaiv']))
+        optAncients['Morg'] = round(float(siya ** 2))
+        optAncients['Solomon'] = round(floor(siya**(0.8)/calcs.alpha**0.4))
 
     return optAncients
 
