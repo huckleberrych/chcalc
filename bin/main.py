@@ -2,6 +2,7 @@ import savedecoder
 from math import log, floor, ceil, exp, log10, sqrt
 
 MODE = 'idle'
+HIGHWEP = 'off'
 
 def getCurrentAncientLvls(input):
     curAncients = {'Argaiv':0,
@@ -92,6 +93,10 @@ def calcOptimalAncientLvls(curAncients, siya, calcs):
                    'Morg':0,
                    'Siya':siya,
                    'Solomon':0}
+    if HIGHWEP == 'on':
+        goldratio = 0.905
+    else:
+        goldratio = 0.926
     if MODE == 'hybrid':
         optAncients['Frags'] = round(siya * calcs.hybridMultiplier)
         optAncients['Bhaal'] = optAncients['Frags']
@@ -129,9 +134,9 @@ def calcOptimalAncientLvls(curAncients, siya, calcs):
             - 1.422*log(calcs.alpha)
             - 1.422*log(0.25 + exp(-0.01*curAncients['Kuma']))
             - 7.014)
-        optAncients['Libertas'] = ceil(0.926*siya)
-        optAncients['Mammon'] = ceil(0.926*base)
-        optAncients['Mimzee'] = ceil(0.926*base)
+        optAncients['Libertas'] = ceil(goldratio*siya)
+        optAncients['Mammon'] = ceil(goldratio*base)
+        optAncients['Mimzee'] = ceil(goldratio*base)
         optAncients['Morg'] = (base ** 2)
         optAncients['Solomon'] = ceil(base**(0.8)/calcs.alpha**0.4)
 
@@ -289,7 +294,7 @@ def calcSoloMultiplier(Solomon, ponyboy):
     elif Solomon < 81:
         soloMultiplier = 1 + (ponyboy + 1) * (2.4 + ((Solomon - 60) * 0.02))
     else:
-        soloMultiplier = 1 + (2.8 + ((Solomon - 80) * 0.01)) * (ponyboy + 1)
+        soloMultiplier = 1 + (ponyboy + 1) * (2.8 + ((Solomon - 80) * 0.01))
     return soloMultiplier
 
 def getAncientLvlDifferences(curAncients, optAncients):
@@ -318,9 +323,11 @@ def getAncientLvlDifferences(curAncients, optAncients):
             diff[k] = "{:,}".format(diff[k])
     return diff
 
-def theMonsterMath(input, useAscendSouls, mode, hybridMultiplier):
+def theMonsterMath(input, useAscendSouls, mode, hybridMultiplier, highwep):
     global MODE
     MODE = mode
+    global HIGHWEP
+    HIGHWEP = highwep
     savedata = savedecoder.decryptSave(input)
     if savedata in ('Invalid Save File', 'Invalid Save File - bad hash'):
         return (0, 0, 0, 0, 0, savedata)

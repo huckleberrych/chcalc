@@ -20,9 +20,9 @@ class Index(object):
         
     def POST(self):
 
-        form = web.input(save="", useAscendSouls='off', mode='idle')
+        form = web.input(save="", useAscendSouls='off', mode='idle', highwep='off')
 
-        curAncients, optAncients, diff, calcs, optcost, msg = main.theMonsterMath(form.save, form.useAscendSouls, form.mode, float(form.hybridMultiplier))
+        curAncients, optAncients, diff, calcs, optcost, msg = main.theMonsterMath(form.save, form.useAscendSouls, form.mode, float(form.hybridMultiplier), form.highwep)
 
         if msg in ('You need to buy Siyalatas!',
                        'Invalid Save File',
