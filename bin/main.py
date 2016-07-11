@@ -185,7 +185,10 @@ class Calculations(dict):
             self.tp = 1 - 0.49 * exp(-self.AS/10000.0) - 0.5 * exp(-self.phan/1000.0)
             self.soloMultiplier = calcSoloMultiplier(Solomon, self.pony)
         self.ascendZone = self.savedata["highestFinishedZonePersist"]
-        self.alpha = 1.4067 * log(1 + self.tp * 1) / log(ceil(self.ascendZone / 500.0) * 0.005 + 1.14)
+        if HIGHWEP == 'on':
+            self.alpha = 1.1085 * log(1 + self.tp) / log(ceil(self.ascendZone / 500.0) * 0.005 + 1.14)
+        else:
+            self.alpha = 1.4067 * log(1 + self.tp) / log(ceil(self.ascendZone / 500.0) * 0.005 + 1.14)
         self.totalSoulsAvail = float(self.savedata["heroSouls"])
         if useAscendSouls == 'on':
             self.totalSoulsAvail += float(self.savedata["primalSouls"])
