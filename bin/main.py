@@ -5,74 +5,19 @@ MODE = 'idle'
 HIGHWEP = 'off'
 
 def getCurrentAncientLvls(input):
-    curAncients = {'Argaiv':0,
-                   'Atman':0,
-                   'Bhaal':0,
-                   'Bubos':0,
-                   'Chronos':0,
-                   'Dogcog':0,
-                   'Dora':0,
-                   'Frags':0,
-                   'Fortuna':0,
-                   'Jugs':0,
-                   'Kuma':0,
-                   'Libertas':0,
-                   'Mammon':0,
-                   'Mimzee':0,
-                   'Morg':0,
-                   'Siya':0,
-                   'Solomon':0}
-    if input.get('ancients').get('ancients').get('28'):
-        curAncients['Argaiv'] = float(
-            input['ancients']['ancients']['28']['level'])
-    if input.get('ancients').get('ancients').get('13'):
-        curAncients['Atman'] = float(
-            input['ancients']['ancients']['13']['level'])
-    if input.get('ancients').get('ancients').get('15'):
-        curAncients['Bhaal'] = float(
-            input['ancients']['ancients']['15']['level'])
-    if input.get('ancients').get('ancients').get('18'):
-        curAncients['Bubos'] = float(
-            input['ancients']['ancients']['18']['level'])
-    if input.get('ancients').get('ancients').get('17'):
-        curAncients['Chronos'] = float(
-            input['ancients']['ancients']['17']['level'])
-    if input.get('ancients').get('ancients').get('11'):
-        curAncients['Dogcog'] = float(
-            input['ancients']['ancients']['11']['level'])
-    if input.get('ancients').get('ancients').get('14'):
-        curAncients['Dora'] = float(
-            input['ancients']['ancients']['14']['level'])
-    if input.get('ancients').get('ancients').get('19'):
-        curAncients['Frags'] = float(
-            input['ancients']['ancients']['19']['level'])
-    if input.get('ancients').get('ancients').get('12'):
-        curAncients['Fortuna'] = float(
-            input['ancients']['ancients']['12']['level'])
-    if input.get('ancients').get('ancients').get('29'):
-        curAncients['Jugs'] = float(
-            input['ancients']['ancients']['29']['level'])
-    if input.get('ancients').get('ancients').get('21'):
-        curAncients['Kuma'] = float(
-            input['ancients']['ancients']['21']['level'])
-    if input.get('ancients').get('ancients').get('4'):
-        curAncients['Libertas'] = float(
-            input['ancients']['ancients']['4']['level'])
-    if input.get('ancients').get('ancients').get('8'):
-        curAncients['Mammon'] = float(
-            input['ancients']['ancients']['8']['level'])
-    if input.get('ancients').get('ancients').get('9'):
-        curAncients['Mimzee'] = float(
-            input['ancients']['ancients']['9']['level'])
-    if input.get('ancients').get('ancients').get('16'):
-        curAncients['Morg'] = float(
-            input['ancients']['ancients']['16']['level'])
-    if input.get('ancients').get('ancients').get('5'):
-        curAncients['Siya'] = float(
-            input['ancients']['ancients']['5']['level'])
-    if input.get('ancients').get('ancients').get('3'):
-        curAncients['Solomon'] = float(
-            input['ancients']['ancients']['3']['level'])
+    fromsave = input['ancients']['ancients']
+    ancientIDs = {'28':'Argaiv', '13':'Atman', '15':'Bhaal',
+                  '18':'Bubos', '17':'Chronos', '11':'Dogcog',
+                  '14':'Dora', '12':'Fortuna', '19':'Frags',
+                  '29':'Jugs', '21':'Kuma', '4':'Libertas',
+                  '8':'Mammon', '9':'Mimzee', '16':'Morg',
+                  '5':'Siya', '3':'Solomon'}
+    curAncients = {}
+    for k, v in ancientIDs.iteritems():
+        try:
+            curAncients[v] = float(fromsave[k]['level'])
+        except:
+            curAncients[v] = 0
     return curAncients
 
 def calcOptimalAncientLvls(curAncients, siya, calcs):
@@ -184,7 +129,9 @@ class Calculations(dict):
             self.pony = self.savedata['outsiders']['outsiders']['5']['level']
             self.tp = 1 - 0.49 * exp(-self.AS/10000.0) - 0.5 * exp(-self.phan/1000.0)
             self.soloMultiplier = calcSoloMultiplier(Solomon, self.pony)
+            self.chorDiscount = 1 - 0.95 ** self.chor
         self.ascendZone = self.savedata["highestFinishedZonePersist"]
+        
         if HIGHWEP == 'on':
             self.alpha = 1.1085 * log(1 + self.tp) / log(ceil(self.ascendZone / 500.0) * 0.005 + 1.14)
         else:
@@ -192,8 +139,7 @@ class Calculations(dict):
         self.totalSoulsAvail = float(self.savedata["heroSouls"])
         if useAscendSouls == 'on':
             self.totalSoulsAvail += float(self.savedata["primalSouls"])
-        if self.savedata.get('outsiders'):
-            self.chorDiscount = 1 - 0.95 ** self.chor
+        
         if self.savedata.get("heroSoulsSacrificed"):
             self.maxTPreward = float(self.savedata["heroSoulsSacrificed"]) * (0.05 + (self.borb * 0.005))
         if self.maxTPreward != 0:
@@ -208,53 +154,44 @@ class Calculations(dict):
                 self.newTPzone = int((ceil((log(self.maxTPreward / (20 * self.newSoloMultiplier))) / (log(1 + self.tp))) * 5) + 100)
         else:
             self.newTPzone = self.maxTPzone
+            
+def costFunc1(chorDiscount, opt, cur):
+    return max(ceil((1-chorDiscount)*(ceil((0.4*opt**2.5)-(0.4*cur**2.5)))), 0)
+    
+def costFunc2(chorDiscount, opt, cur):
+    return max(ceil(((1-chorDiscount)*((2**(opt+1)-1)-(2**(cur+1)-1)))), 0)
+    
+def costFunc3(chorDiscount, opt, cur):
+    return max(ceil((1 - chorDiscount)*(0.5*(opt)*(opt+2)-0.5*cur*(cur+2))), 0)
+
+def costFunc4(chorDiscount, opt, cur):
+    return max(ceil((1-chorDiscount)*(opt-cur)), 0)
 
 def calcOptCost(curAncients, optAncients, chorDiscount):
-    optCost = {'Argaiv':0, 'Atman':0, 'Bhaal': 0, 'Bubos':0,
-               'Chronos':0, 'Dogcog':0, 'Dora':0, 'Frags': 0,
-               'Fortuna':0, 'Jugs':0, 'Kuma':0, 'Libertas':0,
-               'Mammon':0, 'Mimzee':0, 'Morg':0, 'Siya':0,
-               'Solomon':0}
-    if optAncients['Argaiv'] > curAncients['Argaiv']:
-        optCost['Argaiv'] = int(ceil((1 - chorDiscount)*(0.5*(optAncients['Argaiv'])*(optAncients['Argaiv']+2)-0.5*curAncients['Argaiv']*(curAncients['Argaiv']+2))))
-    if optAncients['Atman'] > curAncients['Atman']:
-        optCost['Atman'] = int(ceil(((1-chorDiscount)*((2**(optAncients['Atman']+1)-1)-(2**(curAncients['Atman']+1)-1)))))
-    if optAncients['Bhaal'] > curAncients['Bhaal']:
-        optCost['Bhaal'] = int(ceil((1 - chorDiscount)*(0.5*(optAncients['Bhaal'])*(optAncients['Bhaal']+2)-0.5*curAncients['Bhaal']*(curAncients['Bhaal']+2))))
-    if optAncients['Bubos'] > curAncients['Bubos']:
-        optCost['Bubos'] = int(ceil(((1-chorDiscount)*((2**(optAncients['Bubos']+1)-1)-(2**(curAncients['Bubos']+1)-1)))))
-    if optAncients['Chronos'] > curAncients['Chronos']:
-        optCost['Chronos'] = int(ceil(((1-chorDiscount)*((2**(optAncients['Chronos']+1)-1)-(2**(curAncients['Chronos']+1)-1)))))
-    if optAncients['Dogcog'] > curAncients['Dogcog']:
-        optCost['Dogcog'] = int(ceil(((1-chorDiscount)*((2**(optAncients['Dogcog']+1)-1)-(2**(curAncients['Dogcog']+1)-1)))))
-    if optAncients['Dora'] > curAncients['Dora']:
-        optCost['Dora'] = int(ceil(((1-chorDiscount)*((2**(optAncients['Dora']+1)-1)-(2**(curAncients['Dora']+1)-1)))))
-    if optAncients['Fortuna'] > curAncients['Fortuna']:
-        optCost['Fortuna'] = int(ceil(((1-chorDiscount)*((2**(optAncients['Fortuna']+1)-1)-(2**(curAncients['Fortuna']+1)-1)))))
-    if optAncients['Frags'] > curAncients['Frags']:
-        optCost['Frags'] = int(ceil((1 - chorDiscount)*(0.5*(optAncients['Frags'])*(optAncients['Frags']+2)-0.5*curAncients['Frags']*(curAncients['Frags']+2))))
-    if optAncients['Jugs'] > curAncients['Jugs']:
-        optCost['Jugs'] = int(ceil((1-chorDiscount)*(ceil((0.4*optAncients['Jugs']**2.5)-(0.4*curAncients['Jugs']**2.5)))))
-    if optAncients['Kuma'] > curAncients['Kuma']:
-        optCost['Kuma'] = int(ceil(((1-chorDiscount)*((2**(optAncients['Kuma']+1)-1)-(2**(curAncients['Kuma']+1)-1)))))
-    if optAncients['Libertas'] > curAncients['Libertas']:
-        optCost['Libertas'] = int(ceil((1-chorDiscount)*(0.5*(optAncients['Libertas'])*(optAncients['Libertas']+2)-0.5*curAncients['Libertas']*(curAncients['Libertas']+2))))
-    if optAncients['Mammon'] > curAncients['Mammon']:
-        optCost['Mammon'] = int(ceil((1-chorDiscount)*(0.5*(optAncients['Mammon'])*(optAncients['Mammon']+2)-0.5*curAncients['Mammon']*(curAncients['Mammon']+2))))
-    if optAncients['Mimzee'] > curAncients['Mimzee']:
-        optCost['Mimzee'] = int(ceil((1-chorDiscount)*(0.5*(optAncients['Mimzee'])*(optAncients['Mimzee']+2)-0.5*curAncients['Mimzee']*(curAncients['Mimzee']+2))))
-    if optAncients['Morg'] > curAncients['Morg']:
-        optCost['Morg'] = int(ceil((1-chorDiscount)*(optAncients['Morg']-curAncients['Morg'])))
-    if optAncients['Siya'] > curAncients['Siya']:
-        optCost['Siya'] = int(ceil((1-chorDiscount)*(0.5*(optAncients['Siya'])*(optAncients['Siya']+2)-0.5*curAncients['Siya']*(curAncients['Siya']+2))))
-    if optAncients['Solomon'] > curAncients['Solomon']:
-        optCost['Solomon'] = int(ceil((1-chorDiscount)*(ceil((0.4*optAncients['Solomon']**2.5)-(0.4*curAncients['Solomon']**2.5)))))
-    
+    optCost = {}
+    optCost['Argaiv'] = costFunc3(chorDiscount, optAncients['Argaiv'], curAncients['Argaiv'])
+    optCost['Atman'] = costFunc2(chorDiscount, optAncients['Atman'], curAncients['Atman'])
+    optCost['Bhaal'] = costFunc3(chorDiscount, optAncients['Bhaal'], curAncients['Bhaal'])
+    optCost['Bubos'] = costFunc2(chorDiscount, optAncients['Bubos'], curAncients['Bubos'])
+    optCost['Chronos'] = costFunc2(chorDiscount, optAncients['Chronos'], curAncients['Chronos'])
+    optCost['Dogcog'] = costFunc2(chorDiscount, optAncients['Dogcog'], curAncients['Dogcog'])
+    optCost['Dora'] = costFunc2(chorDiscount, optAncients['Dora'], curAncients['Dora'])
+    optCost['Fortuna'] = costFunc2(chorDiscount, optAncients['Fortuna'], curAncients['Fortuna'])
+    optCost['Frags'] = costFunc3(chorDiscount, optAncients['Frags'], curAncients['Frags'])
+    optCost['Jugs'] = costFunc1(chorDiscount, optAncients['Jugs'], curAncients['Jugs'])
+    optCost['Kuma'] = costFunc2(chorDiscount, optAncients['Kuma'], curAncients['Kuma'])
+    optCost['Libertas'] = costFunc3(chorDiscount, optAncients['Libertas'], curAncients['Libertas'])
+    optCost['Mammon'] = costFunc3(chorDiscount, optAncients['Mammon'], curAncients['Mammon'])
+    optCost['Mimzee'] = costFunc3(chorDiscount, optAncients['Mimzee'], curAncients['Mimzee'])
+    optCost['Morg'] = costFunc4(chorDiscount, optAncients['Morg'], curAncients['Morg'])
+    optCost['Siya'] = costFunc3(chorDiscount, optAncients['Siya'], curAncients['Siya'])
+    optCost['Solomon'] = costFunc1(chorDiscount, optAncients['Solomon'], curAncients['Solomon'])
+
     optCost['Total'] = sum(optCost.itervalues())
     return optCost
 
 def findOptSiya(curAncients, calcs):
-    
+
     ##check if they can afford to optimize
     optAncients = calcOptimalAncientLvls(curAncients, curAncients['Siya'], calcs)
     optcost = calcOptCost(curAncients, optAncients, calcs.chorDiscount)
@@ -302,24 +239,8 @@ def calcSoloMultiplier(Solomon, ponyboy):
 
 def getAncientLvlDifferences(curAncients, optAncients):
     diff = {}
-    diff['Argaiv'] = max(int(optAncients['Argaiv'] - curAncients['Argaiv']), 0)
-    diff['Atman'] = max(int(optAncients['Atman'] - curAncients['Atman']), 0)
-    diff['Bhaal'] = max(int(optAncients['Bhaal'] - curAncients['Bhaal']), 0)
-    diff['Bubos'] = max(int(optAncients['Bubos'] - curAncients['Bubos']), 0)
-    diff['Chronos'] = max(int(optAncients['Chronos'] - curAncients['Chronos']), 0)
-    diff['Dogcog'] = max(int(optAncients['Dogcog'] - curAncients['Dogcog']), 0)
-    diff['Dora'] = max(int(optAncients['Dora'] - curAncients['Dora']), 0)
-    diff['Frags'] = max(int(optAncients['Frags'] - curAncients['Frags']), 0)
-    diff['Fortuna'] = max(int(optAncients['Fortuna'] - curAncients['Fortuna']), 0)
-    diff['Jugs'] = max(int(optAncients['Jugs'] - curAncients['Jugs']), 0)
-    diff['Kuma'] = max(int(optAncients['Kuma'] - curAncients['Kuma']), 0)
-    diff['Libertas'] = max(int(optAncients['Libertas'] - curAncients['Libertas']), 0)
-    diff['Mammon'] = max(int(optAncients['Mammon'] - curAncients['Mammon']), 0)
-    diff['Mimzee'] = max(int(optAncients['Mimzee'] - curAncients['Mimzee']), 0)
-    diff['Morg'] = max(int(optAncients['Morg'] - curAncients['Morg']), 0)
-    diff['Siya'] = max(int(optAncients['Siya'] - curAncients['Siya']), 0)
-    diff['Solomon'] = max(int(optAncients['Solomon'] - curAncients['Solomon']), 0)
-    for k in diff:
+    for k in curAncients.keys():
+        diff[k] = max(int(optAncients[k] - curAncients[k]), 0)
         if diff[k] > 1e9:
             diff[k] = "{:.3E}".format(diff[k])
         else:
@@ -327,9 +248,8 @@ def getAncientLvlDifferences(curAncients, optAncients):
     return diff
 
 def theMonsterMath(input, useAscendSouls, mode, hybridMultiplier, highwep):
-    global MODE
+    global MODE, HIGHWEP
     MODE = mode
-    global HIGHWEP
     HIGHWEP = highwep
     savedata = savedecoder.decryptSave(input)
     if savedata in ('Invalid Save File', 'Invalid Save File - bad hash'):
